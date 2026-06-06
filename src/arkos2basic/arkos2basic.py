@@ -14,10 +14,12 @@ Vengono ricostruiti due aspetti temporali del tracker:
   nessuna forzatura e rende la nota tenuta fino alla successiva.
 """
 
-import argparse
 import re
-
 from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Annotated
+
+import typer
 
 
 # Nomi delle 12 note cromatiche. In CVBasic il diesis va DOPO l'ottava
@@ -49,11 +51,15 @@ class Cell:
         row: indice di riga nel pattern (posizione verticale).
         note: numero di nota in stile MIDI, oppure -1 se assente.
         speed: valore forceInstrumentSpeed della cella, o None.
+        instrument: indice dello strumento (-1 se non specificato).
+            Lo strumento 0 ("Empty") indica un RST: il canale va
+            in silenzio a quella riga.
     """
 
     row: int
     note: int
     speed: int | None = None
+    instrument: int = -1
 
 
 @dataclass
@@ -186,6 +192,8 @@ def parse_arkos(text: str) -> Song:
             cell.row = int(value)
         elif top == "cell" and cell is not None and key == "note":
             cell.note = int(value)
+        elif top == "cell" and cell is not None and key == "instrument":
+            cell.instrument = int(value)
         elif in_effect and cell is not None and key == "logicalValue":
             cell.speed = int(value)
         elif in_speed_index and key == "trackIndex":
@@ -249,8 +257,10 @@ def build_channel(
     total = row_start[height]
     tokens: list[str] = ["-"] * total
 
-    note_cells = [c for c in cells if c.note >= 0]
-    speed_at_row = {c.row: c.speed for c in cells if c.speed is not None}
+    note_cells = [c for c in cells if c.note >= 0 and c.row < height]
+    speed_at_row = {
+        c.row: c.speed for c in cells if c.speed is not None and c.row < height
+    }
 
     for i, current in enumerate(note_cells):
         last_speed: int | None = None
@@ -273,9 +283,10 @@ def build_channel(
             length = max(1, round(base * length_scale))
             audible = min(length, gap)
 
-        tokens[start] = note_to_cvbasic(current.note, octave_offset)
-        for k in range(1, audible):
-            tokens[start + k] = "S"
+        if current.instrument != 0:
+            tokens[start] = note_to_cvbasic(current.note, octave_offset)
+            for k in range(1, audible):
+                tokens[start + k] = "S"
 
     return tokens
 
@@ -287,6 +298,7 @@ def convert(
     data_byte: int,
     length_scale: float,
     invert_speed: bool,
+    stop: bool = False,
 ) -> tuple[str, set[int]]:
     """Genera il sorgente CVBasic completo della musica.
 
@@ -297,6 +309,7 @@ def convert(
         data_byte: frame per passo MUSIC (il valore DATA BYTE).
         length_scale: fattore che allunga la parte in suono.
         invert_speed: se True, forceInstrumentSpeed alto = nota piu' corta.
+        stop: se True, termina con MUSIC STOP; altrimenti con MUSIC REPEAT.
 
     Returns:
         Una tupla (sorgente BASIC, insieme delle velocita' incontrate).
@@ -347,82 +360,77 @@ def convert(
                 f"\tMUSIC {channels[0][s]},{channels[1][s]},{channels[2][s]}"
             )
 
-    out.append("\tMUSIC STOP")
+    ending = "STOP" if stop else "REPEAT"
+    out.append(f"\tMUSIC {ending}")
 
     return "\n".join(out) + "\n", speeds_seen
 
 
-def parse_args() -> argparse.Namespace:
-    """Definisce e legge gli argomenti da riga di comando.
-
-    Returns:
-        Lo spazio dei nomi con gli argomenti analizzati.
-    """
-    parser = argparse.ArgumentParser(
-        description="Converte un file Arkos Tracker (.txt) in musica CVBasic."
-    )
-    parser.add_argument("input", help="file Arkos Tracker di ingresso")
-    parser.add_argument("output", help="file .bas di uscita")
-    parser.add_argument(
-        "--offset",
-        type=int,
-        default=0,
-        help="ottave da aggiungere (0 = come Arkos)",
-    )
-    parser.add_argument(
-        "--data-byte",
-        type=int,
-        default=2,
-        dest="data_byte",
-        help="frame per passo MUSIC: piu' basso = piu' fedele ma piu' righe "
-        "(1 = tempo esatto)",
-    )
-    parser.add_argument(
-        "--length-scale",
-        type=float,
-        default=1.5,
-        dest="length_scale",
-        help="allunga la durata in suono delle note (1.0 = base)",
-    )
-    parser.add_argument(
-        "--invert",
-        action="store_true",
-        help="inverte la scala: forceInstrumentSpeed alto = nota piu' corta",
-    )
-    parser.add_argument(
-        "--label",
-        default="musica",
-        help="etichetta del blocco musicale nel sorgente",
-    )
-
-    return parser.parse_args()
+app = typer.Typer(help="Converte un file Arkos Tracker (.txt) in musica CVBasic.")
 
 
-def main() -> None:
+@app.command()
+def main(
+    input_file: Annotated[
+        Path,
+        typer.Argument(help="File Arkos Tracker di ingresso"),
+    ],
+    output_file: Annotated[
+        Path,
+        typer.Argument(help="File .bas di uscita"),
+    ],
+    octaves: Annotated[
+        int,
+        typer.Option(
+            help="Delta di ottave rispetto al base +1 (es. --octaves 1 → +2, "
+                 "--octaves -1 → 0)"
+        ),
+    ] = 0,
+    data_byte: Annotated[
+        int,
+        typer.Option(help="Frame per passo MUSIC: più basso = più fedele "
+                          "ma più righe (1 = tempo esatto)"),
+    ] = 2,
+    length_scale: Annotated[
+        float,
+        typer.Option(help="Allunga la durata in suono delle note (1.0 = base)"),
+    ] = 3.0,
+    invert: Annotated[
+        bool,
+        typer.Option(help="Inverte la scala: forceInstrumentSpeed alto = "
+                          "nota più corta"),
+    ] = False,
+    label: Annotated[
+        str,
+        typer.Option(help="Etichetta del blocco musicale nel sorgente"),
+    ] = "musica",
+    stop: Annotated[
+        bool,
+        typer.Option("--stop", help="Termina con MUSIC STOP anziché MUSIC REPEAT"),
+    ] = False,
+) -> None:
     """Punto di ingresso da riga di comando."""
-    args = parse_args()
+    if data_byte < 1:
+        typer.echo("Errore: --data-byte deve essere almeno 1", err=True)
+        raise typer.Exit(1)
 
-    if args.data_byte < 1:
-        raise SystemExit("--data-byte deve essere almeno 1")
-
-    with open(args.input, encoding="utf-8") as handle:
+    with open(input_file, encoding="utf-8") as handle:
         text = handle.read()
 
     song = parse_arkos(text)
     source, speeds = convert(
-        song, args.offset, args.label, args.data_byte,
-        args.length_scale, args.invert,
+        song, 1 + octaves, label, data_byte, length_scale, invert, stop,
     )
 
-    with open(args.output, "w", encoding="utf-8") as handle:
+    with open(output_file, "w", encoding="utf-8") as handle:
         handle.write(source)
 
     music_lines = source.count("\tMUSIC ")
     print(f"Convertito: {len(song.positions)} pattern.")
     print(f"Velocita' incontrate (frame/riga nel tracker): {sorted(speeds)}")
-    print(f"DATA BYTE: {args.data_byte}  ->  righe MUSIC: {music_lines}")
-    print(f"Output scritto in: {args.output}")
+    print(f"DATA BYTE: {data_byte}  ->  righe MUSIC: {music_lines}")
+    print(f"Output scritto in: {output_file}")
 
 
 if __name__ == "__main__":
-    main()
+    app()

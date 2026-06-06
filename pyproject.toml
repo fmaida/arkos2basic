@@ -8,13 +8,14 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.12,<4"
 dependencies = [
+    "typer (>=0.26.7,<0.27.0)"
 ]
 
 [tool.poetry]
 packages = [{include = "arkos2basic", from = "src"}]
 
 [tool.poetry.scripts]
-arkos2basic = "arkos2basic.arkos2basic:main"
+arkos2basic = "arkos2basic.arkos2basic:app"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
