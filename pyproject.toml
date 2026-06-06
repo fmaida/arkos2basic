@@ -1,0 +1,21 @@
+[project]
+name = "arkos2basic"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Francesco Maida",email = "francesco.maida@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4"
+dependencies = [
+]
+
+[tool.poetry]
+packages = [{include = "arkos2basic", from = "src"}]
+
+[tool.poetry.scripts]
+arkos2basic = "arkos2basic.arkos2basic:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
