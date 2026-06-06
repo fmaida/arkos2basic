@@ -73,6 +73,12 @@ class Song:
         tracks: per ogni trackIndex la lista delle sue celle.
         speed_tracks: per ogni speed track la mappa riga -> velocita'.
         initial_speed: velocita' iniziale prima di ogni cambio.
+        drum_instruments: mappa strumento_idx -> tipo CVBasic (M1/M2/M3)
+            per gli strumenti che usano il generatore di rumore.
+        loop_start_position: indice (0-based) della posizione da cui il
+            brano ricomincia; 0 significa loop dall'inizio.
+        end_position: indice dell'ultima posizione da riprodurre
+            (0-based, incluso); -1 significa usa tutte le posizioni.
     """
 
     positions: list[tuple[int, int]] = field(default_factory=list)
@@ -81,6 +87,32 @@ class Song:
     tracks: dict[int, list[Cell]] = field(default_factory=dict)
     speed_tracks: dict[int, dict[int, int]] = field(default_factory=dict)
     initial_speed: int = 6
+    drum_instruments: dict[int, str] = field(default_factory=dict)
+    loop_start_position: int = 0
+    end_position: int = -1
+
+
+def _noise_to_drum_type(avg_noise: float) -> str:
+    """Mappa il periodo medio di rumore di uno strumento al tipo CVBasic.
+
+    Il periodo di rumore dell'AY-3-8910 va da 1 (alta frequenza) a 31
+    (bassa frequenza). La mappatura e' approssimativa:
+    - 1-5   -> M2 (tap, snare/hi-hat)
+    - 6-15  -> M1 (strong, cassa)
+    - 16+   -> M3 (roll, rumore basso)
+
+    Args:
+        avg_noise: media dei periodi di rumore non-zero dello strumento.
+
+    Returns:
+        Stringa "M1", "M2" o "M3" da usare come quarto argomento MUSIC.
+    """
+    if avg_noise <= 5:
+        return "M2"
+    elif avg_noise <= 15:
+        return "M1"
+
+    return "M3"
 
 
 def parse_arkos(text: str) -> Song:
@@ -108,6 +140,11 @@ def parse_arkos(text: str) -> Song:
     pos_height: int | None = None
     st_index: int | None = None
     st_row: int | None = None
+
+    inst_index: int = 0
+    in_inst_cells: bool = False
+    inst_noise_values: list[int] = []
+    inst_cell_noise: int = 0
 
     for raw in lines:
         line = raw.strip()
@@ -141,6 +178,12 @@ def parse_arkos(text: str) -> Song:
             elif name == "position":
                 pos_pattern = None
                 pos_height = None
+            elif (name == "cells" and "instrument" in stack
+                    and "track" not in stack):
+                in_inst_cells = True
+                inst_noise_values = []
+            elif name == "cell" and in_inst_cells:
+                inst_cell_noise = 0
             continue
 
         if end:
@@ -153,6 +196,8 @@ def parse_arkos(text: str) -> Song:
                 if keep and track_index is not None:
                     song.tracks.setdefault(track_index, []).append(cell)
                 cell = None
+            elif name == "cell" and in_inst_cells:
+                inst_noise_values.append(inst_cell_noise)
             elif name == "effect":
                 in_effect = False
             elif name == "trackIndexes":
@@ -167,6 +212,15 @@ def parse_arkos(text: str) -> Song:
             elif name == "position":
                 if pos_pattern is not None and pos_height is not None:
                     song.positions.append((pos_pattern, pos_height))
+            elif (name == "cells" and "instrument" in stack
+                    and "track" not in stack):
+                in_inst_cells = False
+            elif name == "instrument" and "instruments" in stack:
+                noise_only = [v for v in inst_noise_values if v > 0]
+                if noise_only:
+                    avg = sum(noise_only) / len(noise_only)
+                    song.drum_instruments[inst_index] = _noise_to_drum_type(avg)
+                inst_index += 1
 
             if stack:
                 stack.pop()
@@ -206,6 +260,12 @@ def parse_arkos(text: str) -> Song:
             pos_height = int(value)
         elif top == "subsong" and key == "initialSpeed":
             song.initial_speed = int(value)
+        elif top == "subsong" and key == "loopStartPosition":
+            song.loop_start_position = int(value)
+        elif top == "subsong" and key == "endPosition":
+            song.end_position = int(value)
+        elif in_inst_cells and top == "cell" and key == "noise":
+            inst_cell_noise = int(value)
 
     return song
 
@@ -240,8 +300,13 @@ def build_channel(
     octave_offset: int,
     length_scale: float,
     invert_speed: bool,
+    drum_instruments: dict[int, str],
 ) -> list[str]:
     """Espande un canale in token CVBasic seguendo il layout dei passi.
+
+    Le note suonate con strumento 0 (RST) o con uno strumento percussivo
+    vengono omesse dal canale melodico (lasciate come silenzio "-"); le
+    note percussive vengono raccolte separatamente da build_drum_channel.
 
     Args:
         cells: celle del canale (note ed eventuali soli effetti speed).
@@ -250,6 +315,8 @@ def build_channel(
         octave_offset: ottave da aggiungere in conversione.
         length_scale: fattore che allunga la parte in suono delle note.
         invert_speed: se True, forceInstrumentSpeed alto = nota piu' corta.
+        drum_instruments: mappa strumento_idx -> tipo CVBasic; le note
+            con questi strumenti vengono silenziare nel canale melodico.
 
     Returns:
         Lista di token CVBasic lunga row_start[height].
@@ -283,10 +350,54 @@ def build_channel(
             length = max(1, round(base * length_scale))
             audible = min(length, gap)
 
-        if current.instrument != 0:
+        is_silent = current.instrument == 0 or current.instrument in drum_instruments
+        if not is_silent:
             tokens[start] = note_to_cvbasic(current.note, octave_offset)
             for k in range(1, audible):
                 tokens[start + k] = "S"
+
+    return tokens
+
+
+def build_drum_channel(
+    channels_cells: list[list[Cell]],
+    row_start: list[int],
+    height: int,
+    drum_instruments: dict[int, str],
+    drum_length: int = 1,
+) -> list[str]:
+    """Costruisce la traccia percussioni (quarto canale MUSIC).
+
+    Scansiona tutti i canali melodici del pattern e posiziona il token
+    del tipo di percussione allo step corrispondente alla riga della nota,
+    ripetendolo per drum_length step consecutivi per rendere il colpo piu'
+    udibile. Se piu' canali hanno una nota percussiva sulla stessa riga,
+    l'ultimo canale della lista sovrascrive i precedenti.
+
+    Args:
+        channels_cells: celle di ciascun canale melodico del pattern.
+        row_start: per ogni riga il passo iniziale.
+        height: numero di righe del pattern.
+        drum_instruments: mappa strumento_idx -> tipo CVBasic (M1/M2/M3).
+        drum_length: numero di step consecutivi per ogni colpo percussivo.
+
+    Returns:
+        Lista di token per il quarto canale, lunga row_start[height].
+    """
+    total = row_start[height]
+    tokens: list[str] = ["-"] * total
+
+    for cells in channels_cells:
+        drum_cells = [
+            c for c in cells
+            if c.instrument in drum_instruments and c.row < height
+        ]
+        for cell in drum_cells:
+            drum_type = drum_instruments[cell.instrument]
+            start = row_start[cell.row]
+            for k in range(drum_length):
+                if start + k < total:
+                    tokens[start + k] = drum_type
 
     return tokens
 
@@ -299,6 +410,10 @@ def convert(
     length_scale: float,
     invert_speed: bool,
     stop: bool = False,
+    drum_length: int = 1,
+    pos_start: int = 0,
+    pos_end: int | None = None,
+    exclude_channels: set[int] | None = None,
 ) -> tuple[str, set[int]]:
     """Genera il sorgente CVBasic completo della musica.
 
@@ -310,10 +425,22 @@ def convert(
         length_scale: fattore che allunga la parte in suono.
         invert_speed: se True, forceInstrumentSpeed alto = nota piu' corta.
         stop: se True, termina con MUSIC STOP; altrimenti con MUSIC REPEAT.
+        drum_length: step consecutivi per ogni colpo percussivo.
+        pos_start: indice della prima posizione da includere.
+        pos_end: indice esclusivo dell'ultima posizione; None usa
+            end_position del brano (o tutta la lista).
+        exclude_channels: insieme di indici di canale sorgente da escludere
+            (1-based: 1, 2 o 3). I canali rimanenti si compattano a
+            sinistra; le posizioni libere a destra restano '-'.
 
     Returns:
         Una tupla (sorgente BASIC, insieme delle velocita' incontrate).
     """
+    excluded: set[int] = exclude_channels if exclude_channels is not None else set()
+    song_end = song.end_position + 1 if song.end_position >= 0 else len(song.positions)
+    end = pos_end if pos_end is not None else song_end
+    positions_to_play = song.positions[pos_start:end]
+
     out: list[str] = []
     out.append(f"{label}:")
     out.append(
@@ -324,7 +451,7 @@ def convert(
     current_speed = song.initial_speed
     speeds_seen: set[int] = set()
 
-    for pattern_index, height in song.positions:
+    for pattern_index, height in positions_to_play:
         track = song.speed_tracks.get(song.pattern_speed.get(pattern_index, -1), {})
 
         steps_per_row: list[int] = []
@@ -340,25 +467,48 @@ def convert(
         total = row_start[height]
 
         track_ids = song.patterns.get(pattern_index, [])
+        all_cells = [song.tracks.get(tid, []) for tid in track_ids]
+
+        # Filtra i canali esclusi (indice 1-based); i rimanenti si
+        # compattano a sinistra e le posizioni libere a destra restano '-'.
+        channels_cells = [
+            cells for i, cells in enumerate(all_cells)
+            if (i + 1) not in excluded
+        ]
+
         channels: list[list[str]] = []
-        for tid in track_ids:
+        for cells in channels_cells:
             channels.append(
                 build_channel(
-                    song.tracks.get(tid, []), height, row_start,
+                    cells, height, row_start,
                     octave_offset, length_scale, invert_speed,
+                    song.drum_instruments,
                 )
             )
         while len(channels) < 3:
             channels.append(["-"] * total)
+
+        has_drums = bool(song.drum_instruments)
+        if has_drums:
+            drums = build_drum_channel(
+                channels_cells, row_start, height,
+                song.drum_instruments, drum_length,
+            )
 
         out.append(
             f"\t' --- pattern {pattern_index} ({height} righe, "
             f"velocita' {steps_per_row and current_speed}) ---"
         )
         for s in range(total):
-            out.append(
-                f"\tMUSIC {channels[0][s]},{channels[1][s]},{channels[2][s]}"
-            )
+            if has_drums:
+                out.append(
+                    f"\tMUSIC {channels[0][s]},{channels[1][s]},"
+                    f"{channels[2][s]},{drums[s]}"
+                )
+            else:
+                out.append(
+                    f"\tMUSIC {channels[0][s]},{channels[1][s]},{channels[2][s]}"
+                )
 
     ending = "STOP" if stop else "REPEAT"
     out.append(f"\tMUSIC {ending}")
@@ -393,8 +543,12 @@ def main(
     ] = 2,
     length_scale: Annotated[
         float,
-        typer.Option(help="Allunga la durata in suono delle note (1.0 = base)"),
-    ] = 3.0,
+        typer.Option(
+            "--length",
+            help="Delta rispetto al base 3.0 (es. --length 1 → 4.0, "
+                 "--length -1 → 2.0)",
+        ),
+    ] = 0.0,
     invert: Annotated[
         bool,
         typer.Option(help="Inverte la scala: forceInstrumentSpeed alto = "
@@ -408,28 +562,103 @@ def main(
         bool,
         typer.Option("--stop", help="Termina con MUSIC STOP anziché MUSIC REPEAT"),
     ] = False,
+    drum_length: Annotated[
+        int,
+        typer.Option(
+            help="Delta rispetto al base 2 step per colpo percussivo "
+                 "(es. --drum-length 1 → 3, --drum-length -1 → 1)",
+        ),
+    ] = 0,
+    exclude_channels: Annotated[
+        str,
+        typer.Option(
+            "--exclude-channels",
+            help="Canali sorgente da escludere, separati da virgola "
+                 "(1–3, es. '2' oppure '2,3'). I canali rimanenti si "
+                 "compattano a sinistra.",
+        ),
+    ] = "",
 ) -> None:
     """Punto di ingresso da riga di comando."""
     if data_byte < 1:
         typer.echo("Errore: --data-byte deve essere almeno 1", err=True)
         raise typer.Exit(1)
 
+    excluded: set[int] = set()
+    for part in exclude_channels.split(","):
+        part = part.strip()
+        if part:
+            val = int(part)
+            if val not in (1, 2, 3):
+                typer.echo(
+                    f"Errore: --exclude-channels accetta solo valori 1, 2, 3 "
+                    f"(trovato: {val})",
+                    err=True,
+                )
+                raise typer.Exit(1)
+            excluded.add(val)
+
     with open(input_file, encoding="utf-8") as handle:
         text = handle.read()
 
     song = parse_arkos(text)
-    source, speeds = convert(
-        song, 1 + octaves, label, data_byte, length_scale, invert, stop,
+
+    do_split = song.loop_start_position > 0 and not stop
+    conv_args = dict(
+        octave_offset=1 + octaves,
+        data_byte=data_byte,
+        length_scale=3.0 + length_scale,
+        invert_speed=invert,
+        drum_length=2 + drum_length,
+        exclude_channels=excluded if excluded else None,
     )
 
-    with open(output_file, "w", encoding="utf-8") as handle:
-        handle.write(source)
+    if do_split:
+        song_end = (
+            song.end_position + 1 if song.end_position >= 0
+            else len(song.positions)
+        )
+        source_intro, speeds_intro = convert(
+            song, label=label, stop=True, pos_start=0,
+            pos_end=song.loop_start_position, **conv_args,
+        )
+        loop_label = f"{label}_loop"
+        source_loop, speeds_loop = convert(
+            song, label=loop_label, stop=False,
+            pos_start=song.loop_start_position, pos_end=song_end, **conv_args,
+        )
+        speeds = speeds_intro | speeds_loop
 
-    music_lines = source.count("\tMUSIC ")
-    print(f"Convertito: {len(song.positions)} pattern.")
+        with open(output_file, "w", encoding="utf-8") as handle:
+            handle.write(source_intro)
+
+        loop_path = output_file.with_stem(output_file.stem + "_loop")
+        with open(loop_path, "w", encoding="utf-8") as handle:
+            handle.write(source_loop)
+
+        intro_patterns = song.loop_start_position
+        loop_patterns = song_end - song.loop_start_position
+        print(f"Split intro/loop: {intro_patterns} pattern(s) intro, "
+              f"{loop_patterns} pattern(s) loop.")
+        print(f"  Intro  -> {output_file}  (label: {label})")
+        print(f"  Loop   -> {loop_path}  (label: {loop_label})")
+    else:
+        source, speeds = convert(
+            song, label=label, stop=stop, pos_start=0, **conv_args,
+        )
+        with open(output_file, "w", encoding="utf-8") as handle:
+            handle.write(source)
+
+        music_lines = source.count("\tMUSIC ")
+        print(f"Convertito: {len(song.positions)} pattern.")
+        print(f"DATA BYTE: {data_byte}  ->  righe MUSIC: {music_lines}")
+        print(f"Output scritto in: {output_file}")
+
     print(f"Velocita' incontrate (frame/riga nel tracker): {sorted(speeds)}")
-    print(f"DATA BYTE: {data_byte}  ->  righe MUSIC: {music_lines}")
-    print(f"Output scritto in: {output_file}")
+    if song.drum_instruments:
+        print(f"Strumenti percussivi rilevati: {dict(song.drum_instruments)}")
+    else:
+        print("Nessuno strumento percussivo rilevato.")
 
 
 if __name__ == "__main__":
