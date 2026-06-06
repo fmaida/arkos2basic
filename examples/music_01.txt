@@ -1,0 +1,4771 @@
+Arkos Tracker text format V1.0
+
+SECTION song
+formatVersion 3.0
+title Untitled
+author Unknown
+composer Unknown
+comment 
+creationDateMs 1969246789
+modificationDateMs 1780751982262
+
+-SECTION instruments
+
+--SECTION instrument
+name Empty
+colorArgb 4290822336
+type psg
+speed 255
+isRetrig false
+loopStartIndex 0
+endIndex 0
+isLooping true
+isSfxExported true
+
+---SECTION cells
+
+----SECTION cell
+volume 0
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link noSoftwareNoHardware
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+---ENDSECTION cells
+--ENDSECTION instrument
+
+--SECTION instrument
+name Beep
+colorArgb 4290822336
+type psg
+speed 0
+isRetrig false
+loopStartIndex 14
+endIndex 14
+isLooping false
+isSfxExported true
+
+---SECTION cells
+
+----SECTION cell
+volume 15
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 14
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 13
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 12
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 11
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 10
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 9
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 8
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 7
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 6
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 5
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 4
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 3
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 2
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+
+----SECTION cell
+volume 1
+noise 0
+primaryPeriod 0
+primaryArpeggioNoteInOctave 0
+primaryArpeggioOctave 0
+primaryPitch 0
+link softwareOnly
+ratio 4
+hardwareEnvelope 8
+secondaryPeriod 0
+secondaryArpeggioNoteInOctave 0
+secondaryArpeggioOctave 0
+secondaryPitch 0
+isRetrig false
+----ENDSECTION cell
+---ENDSECTION cells
+--ENDSECTION instrument
+-ENDSECTION instruments
+
+-SECTION arpeggios
+
+--SECTION expression
+name Default
+isArpeggio true
+speed 0
+shift 0
+loopStartIndex 0
+endIndex 0
+
+---SECTION values
+value 0
+---ENDSECTION values
+--ENDSECTION expression
+-ENDSECTION arpeggios
+
+-SECTION pitches
+
+--SECTION expression
+name Default
+isArpeggio false
+speed 0
+shift 0
+loopStartIndex 0
+endIndex 0
+
+---SECTION values
+value 0
+---ENDSECTION values
+--ENDSECTION expression
+-ENDSECTION pitches
+
+-SECTION subsongs
+
+--SECTION subsong
+title Main
+initialSpeed 6
+digiChannel 1
+highlightSpacing 4
+secondaryHighlight 4
+loopStartPosition 0
+endPosition 4
+replayFrequencyHz 50
+
+---SECTION psgs
+
+----SECTION psg
+type ay
+frequencyHz 1000000
+referenceFrequencyHz 440
+samplePlayerFrequencyHz 8000
+mixingOutput ABC
+----ENDSECTION psg
+---ENDSECTION psgs
+
+---SECTION tracks
+
+----SECTION track
+index 0
+
+-----SECTION cell
+index 0
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 2
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 4
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 8
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 10
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 14
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 16
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 21
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 24
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 26
+note 43
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 27
+note 41
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 28
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 30
+note 41
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 32
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 34
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 5
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 38
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 40
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 47
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 48
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 50
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 52
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 56
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 58
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 62
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 63
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 64
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 66
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 68
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 70
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 72
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 74
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 76
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 82
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 86
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 88
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 89
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 90
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+----ENDSECTION track
+
+----SECTION track
+index 1
+
+-----SECTION cell
+index 3
+note 25
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 4
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 6
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 8
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 10
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 12
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 14
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 16
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 18
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 20
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 24
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 26
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 28
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 30
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 32
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 34
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 36
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 38
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 40
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 42
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 44
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 46
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 48
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 50
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 52
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 54
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 56
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 58
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 60
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 62
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 64
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 66
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 68
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 70
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 72
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 74
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 76
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 78
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 80
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 82
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 84
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 86
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 88
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 90
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 92
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 94
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+----ENDSECTION track
+
+----SECTION track
+index 3
+
+-----SECTION cell
+index 0
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 2
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 4
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 8
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 10
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 14
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 15
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 16
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 21
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 24
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 26
+note 43
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 27
+note 41
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 28
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 30
+note 41
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 32
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 34
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 38
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 40
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 47
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 48
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 50
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 52
+note 48
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 55
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 56
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 60
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 62
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 64
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 67
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 68
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 71
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 72
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 74
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 76
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 80
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 82
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 85
+note 48
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 86
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 88
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 94
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 96
+note 42
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 98
+note 44
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 99
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+----ENDSECTION track
+
+----SECTION track
+index 4
+
+-----SECTION cell
+index 0
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 2
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 4
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 6
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 8
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 10
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 12
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 14
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 16
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 18
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 20
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 24
+note 33
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 26
+note 32
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 28
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 30
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 32
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 34
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 36
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 38
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 40
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 42
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 44
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 45
+note 25
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 46
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 48
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 50
+note 29
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 52
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 54
+note 36
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 56
+note 36
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 58
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 60
+note 36
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 62
+note 36
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 64
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 66
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 68
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 70
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 72
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 74
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 76
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 78
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 80
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 82
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 84
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 86
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 88
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 90
+note 45
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 92
+note 45
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 93
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 94
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 96
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 98
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+----ENDSECTION track
+
+----SECTION track
+index 6
+
+-----SECTION cell
+index 0
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 2
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 3
+note 51
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 4
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 5
+note 54
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 6
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 8
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 10
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 12
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 14
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 15
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 16
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 17
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 18
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 20
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 24
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 26
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 27
+note 48
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 28
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 29
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 30
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 32
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 34
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 36
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 39
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 40
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 42
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 48
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 50
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 52
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 54
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 56
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 58
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 60
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 62
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 64
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 66
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 68
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 70
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 72
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 78
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 83
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 84
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 89
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 90
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 92
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 94
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 95
+note 39
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+----ENDSECTION track
+
+----SECTION track
+index 7
+
+-----SECTION cell
+index 0
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 2
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 4
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 6
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 8
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 10
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 12
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 14
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 16
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 18
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 20
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 24
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 26
+note 42
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 28
+note 42
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 30
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 32
+note 42
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 34
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 36
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 38
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 40
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 42
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 44
+note 35
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 46
+note 35
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 48
+note 16
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 50
+note 30
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 52
+note 32
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 54
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 56
+note 35
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 58
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 60
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 62
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 64
+note 35
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 66
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 68
+note 35
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 70
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 72
+note 23
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 74
+note 35
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 76
+note 35
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 78
+note 18
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 80
+note 30
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 82
+note 30
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 83
+note 35
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 84
+note 23
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 86
+note 32
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 88
+note 30
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 90
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 92
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 94
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+----ENDSECTION track
+
+----SECTION track
+index 9
+
+-----SECTION cell
+index 0
+note 27
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 1
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 2
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 3
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 4
+note 39
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 5
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 6
+note 42
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 7
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 8
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 9
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 10
+note 42
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 11
+note 44
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 12
+note 45
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 13
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 14
+note 46
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 15
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 18
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 21
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 10
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 29
+note 39
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+----ENDSECTION track
+
+----SECTION track
+index 10
+
+-----SECTION cell
+index 0
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 1
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 3
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 5
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 6
+note 20
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 7
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 9
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 11
+note 32
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 13
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 15
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 17
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 18
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 21
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 38
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 10
+------ENDSECTION effect
+-----ENDSECTION cell
+----ENDSECTION track
+
+----SECTION track
+index 12
+
+-----SECTION cell
+index 0
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 2
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 3
+note 51
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 4
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 5
+note 54
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 6
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 8
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 10
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 12
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 14
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 15
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 16
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 17
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 18
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 20
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 24
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 26
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 27
+note 48
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 28
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 29
+note 50
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 0
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 30
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 32
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 34
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 36
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 4
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 39
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 40
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 42
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 48
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 50
+note 42
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 52
+note 44
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 54
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 56
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 58
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 60
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 62
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 64
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 66
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 68
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 70
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 72
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 78
+note 49
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 83
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 84
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 85
+note 47
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 86
+note 45
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 6
+------ENDSECTION effect
+-----ENDSECTION cell
+----ENDSECTION track
+
+----SECTION track
+index 13
+
+-----SECTION cell
+index 0
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 2
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 4
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 6
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 8
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 10
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 12
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 14
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 16
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 18
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 20
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 22
+note 38
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 24
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 26
+note 42
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 28
+note 42
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 30
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 32
+note 42
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 34
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 36
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 38
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 40
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 42
+note 30
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 44
+note 29
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 46
+note 30
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 48
+note 28
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 49
+note 21
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 50
+note 33
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 51
+note 32
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 52
+note 33
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 54
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 55
+note 25
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 56
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 57
+note 36
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 58
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 60
+note 40
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 61
+note 28
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 62
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 63
+note 39
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 64
+note 40
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 66
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 1
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 67
+note 25
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 68
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 69
+note 36
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 70
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 72
+note 35
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 74
+note 47
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 76
+note 47
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 77
+note 25
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 78
+note 37
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 80
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 82
+note 37
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 83
+note 47
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 84
+note 33
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 3
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 86
+note 32
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 88
+note 33
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 90
+note 45
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 91
+note 49
+instrument 1
+-----ENDSECTION cell
+
+-----SECTION cell
+index 92
+note 52
+instrument 1
+
+------SECTION effect
+index 0
+name forceInstrumentSpeed
+logicalValue 2
+------ENDSECTION effect
+-----ENDSECTION cell
+
+-----SECTION cell
+index 94
+note 49
+instrument 1
+-----ENDSECTION cell
+----ENDSECTION track
+---ENDSECTION tracks
+
+---SECTION speedTracks
+
+----SECTION speedTrack
+index 3
+
+-----SECTION cell
+index 0
+value 7
+-----ENDSECTION cell
+----ENDSECTION speedTrack
+---ENDSECTION speedTracks
+
+---SECTION eventTracks
+---ENDSECTION eventTracks
+
+---SECTION positions
+
+----SECTION position
+patternIndex 0
+height 30
+markerName 
+markerColor 4282400896
+
+-----SECTION transpositions
+-----ENDSECTION transpositions
+----ENDSECTION position
+
+----SECTION position
+patternIndex 1
+height 96
+markerName Start
+markerColor 4282400896
+
+-----SECTION transpositions
+-----ENDSECTION transpositions
+----ENDSECTION position
+
+----SECTION position
+patternIndex 2
+height 100
+markerName 
+markerColor 4282400896
+
+-----SECTION transpositions
+-----ENDSECTION transpositions
+----ENDSECTION position
+
+----SECTION position
+patternIndex 3
+height 96
+markerName 
+markerColor 4282400896
+
+-----SECTION transpositions
+-----ENDSECTION transpositions
+----ENDSECTION position
+
+----SECTION position
+patternIndex 4
+height 95
+markerName 
+markerColor 4282400896
+
+-----SECTION transpositions
+-----ENDSECTION transpositions
+----ENDSECTION position
+---ENDSECTION positions
+
+---SECTION patterns
+
+----SECTION pattern
+colorArgb 4286611584
+
+-----SECTION trackIndexes
+trackIndex 9
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 10
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 11
+-----ENDSECTION trackIndexes
+
+-----SECTION speedTrackIndex
+trackIndex 3
+-----ENDSECTION speedTrackIndex
+
+-----SECTION eventTrackIndex
+trackIndex 3
+-----ENDSECTION eventTrackIndex
+----ENDSECTION pattern
+
+----SECTION pattern
+colorArgb 4286611584
+
+-----SECTION trackIndexes
+trackIndex 0
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 1
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 2
+-----ENDSECTION trackIndexes
+
+-----SECTION speedTrackIndex
+trackIndex 0
+-----ENDSECTION speedTrackIndex
+
+-----SECTION eventTrackIndex
+trackIndex 0
+-----ENDSECTION eventTrackIndex
+----ENDSECTION pattern
+
+----SECTION pattern
+colorArgb 4286611584
+
+-----SECTION trackIndexes
+trackIndex 3
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 4
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 5
+-----ENDSECTION trackIndexes
+
+-----SECTION speedTrackIndex
+trackIndex 1
+-----ENDSECTION speedTrackIndex
+
+-----SECTION eventTrackIndex
+trackIndex 1
+-----ENDSECTION eventTrackIndex
+----ENDSECTION pattern
+
+----SECTION pattern
+colorArgb 4286611584
+
+-----SECTION trackIndexes
+trackIndex 6
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 7
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 8
+-----ENDSECTION trackIndexes
+
+-----SECTION speedTrackIndex
+trackIndex 2
+-----ENDSECTION speedTrackIndex
+
+-----SECTION eventTrackIndex
+trackIndex 2
+-----ENDSECTION eventTrackIndex
+----ENDSECTION pattern
+
+----SECTION pattern
+colorArgb 4286611584
+
+-----SECTION trackIndexes
+trackIndex 12
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 13
+-----ENDSECTION trackIndexes
+
+-----SECTION trackIndexes
+trackIndex 14
+-----ENDSECTION trackIndexes
+
+-----SECTION speedTrackIndex
+trackIndex 4
+-----ENDSECTION speedTrackIndex
+
+-----SECTION eventTrackIndex
+trackIndex 4
+-----ENDSECTION eventTrackIndex
+----ENDSECTION pattern
+---ENDSECTION patterns
+--ENDSECTION subsong
+-ENDSECTION subsongs
+ENDSECTION song
