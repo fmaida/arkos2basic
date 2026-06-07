@@ -1,177 +1,189 @@
-# Convertitore Arkos Tracker → CVBasic
+# Arkos Tracker → CVBasic Converter
 
-Documentazione del progetto `arkos2basic`: legge un file musicale
-esportato da **Arkos Tracker 3** (formato testo) e produce uno o due
-blocchi di musica in **CVBasic**, pronti per ColecoVision, MSX e
-Sega SG-1000.
+Documentation for the `arkos2basic` project: reads a music file
+exported from **Arkos Tracker 3** (text format) and produces one or two
+music blocks in **CVBasic**, ready for ColecoVision, MSX and Sega SG-1000.
 
 ---
 
-## 1. Scopo
+## 1. Purpose
 
-Arkos Tracker e CVBasic usano due formati incompatibili:
+Arkos Tracker and CVBasic use two incompatible formats:
 
 | | Arkos Tracker | CVBasic |
 |---|---|---|
-| Note | numeri tipo-MIDI (`note 40`) | nomi letterali (`E3`) |
-| Durata | speed track + effetto `forceInstrumentSpeed` | conteggio di `S` su un `DATA BYTE` fisso |
-| Struttura | pattern/tracce multipli | sequenza lineare di `MUSIC` |
-| Chip | AY-3-8910 (PSG) | SN76489 / AY astratti da CVBasic |
+| Notes | MIDI-style numbers (`note 40`) | literal names (`E3`) |
+| Duration | speed track + `forceInstrumentSpeed` effect | count of `S` on a fixed `DATA BYTE` |
+| Structure | multiple patterns/tracks | linear sequence of `MUSIC` |
+| Chip | AY-3-8910 (PSG) | SN76489 / AY abstracted by CVBasic |
 
-Il convertitore traduce in modo meccanico, **ignorando le definizioni
-degli strumenti** (salvo il rilevamento delle percussioni), e
-ricostruisce due aspetti temporali del brano: la velocità di
-riproduzione e la durata variabile delle singole note.
-
----
-
-## 2. Struttura del file Arkos Tracker
-
-Il file è un testo a sezioni annidate (`SECTION` / `ENDSECTION`, con il
-numero di trattini iniziali a indicare la profondità). Le parti che
-contano per la conversione sono:
-
-- **subsong** → `initialSpeed` (velocità di partenza, in frame per
-  riga), `replayFrequencyHz` (50 Hz), `loopStartPosition` (indice
-  della posizione da cui il brano ricomincia) e `endPosition` (ultima
-  posizione inclusa).
-- **instruments** → le celle di ogni strumento vengono ispezionate
-  solo per rilevare il campo `noise`: se presente e > 0, lo strumento
-  è classificato come percussione (M1/M2/M3).
-- **tracks** → ogni traccia ha un `index` e una lista di **celle**.
-  Ogni cella ha:
-  - `index`: la **riga** del pattern (posizione verticale);
-  - `note`: numero di nota in stile MIDI (0 = C-0), assente se la
-    cella contiene solo un effetto;
-  - `instrument`: 0 = RST (nota cut, canale in silenzio), > 0 =
-    indice strumento;
-  - eventuale effetto `forceInstrumentSpeed` con `logicalValue`
-    (la colonna `sXX` del tracker).
-- **speedTracks** → tracce di velocità; ogni cella ha `index` (riga)
-  e `value` (nuova velocità; **`0` significa "nessun cambio"**).
-- **positions** → l'ordine di riproduzione: ogni posizione punta a un
-  `patternIndex` e ha una `height` (numero di righe).
-- **patterns** → ogni pattern punta a **3 `trackIndex`** (i canali PSG
-  A, B, C) e a uno `speedTrackIndex`.
+The converter translates mechanically, **ignoring instrument definitions**
+(except for percussion detection), and reconstructs two temporal aspects
+of the song: playback speed and variable note duration.
 
 ---
 
-## 3. Logica di conversione
+## 2. Arkos Tracker file structure
 
-### 3.1 Note e ottave
+The file is text with nested sections (`SECTION` / `ENDSECTION`, with
+the number of leading dashes indicating depth). The parts relevant to
+conversion are:
+
+- **subsong** → `initialSpeed` (starting speed in frames per row),
+  `replayFrequencyHz` (50 Hz), `loopStartPosition` (0-based index of
+  the position where the song loops from), and `endPosition` (last
+  included position).
+- **instruments** → each instrument's cells are inspected only to detect
+  the `noise` field: if present and > 0, the instrument is classified
+  as percussion (M1/M2/M3).
+- **tracks** → each track has an `index` and a list of **cells**.
+  Each cell has:
+  - `index`: the **row** in the pattern (vertical position);
+  - `note`: MIDI-style note number (0 = C-0), absent if the cell
+    contains only an effect;
+  - `instrument`: 0 = RST (note cut, channel goes silent), > 0 =
+    instrument index;
+  - optional `forceInstrumentSpeed` effect with `logicalValue`
+    (the `sXX` column in the tracker).
+- **speedTracks** → speed tracks; each cell has `index` (row) and
+  `value` (new speed; **`0` means "no change"**).
+- **positions** → playback order: each position points to a
+  `patternIndex` and has a `height` (number of rows).
+- **patterns** → each pattern points to **3 `trackIndex`** values
+  (PSG channels A, B, C) and a `speedTrackIndex`.
+
+---
+
+## 3. Conversion logic
+
+### 3.1 Notes and octaves
 
 ```
-ottava = note // 12 + offset
-indice_nota = note % 12   →  C, C#, D, D#, E, F, F#, G, G#, A, A#, B
+octave = note // 12
+note_index = note % 12   →  C, C#, D, D#, E, F, F#, G, G#, A, A#, B
 ```
 
-Il nome CVBasic mette il diesis **dopo** l'ottava, es. `A4#`. Con
-`offset 1` (default) la numerazione Arkos viene alzata di un'ottava.
-Le ottave fuori dal range CVBasic (2–6) vengono agganciate al limite
-più vicino.
+CVBasic places the sharp **after** the octave number, e.g. `A4#`.
+With the default `--octaves 0` (effective offset +1), the Arkos note
+numbering is raised by one octave. Octaves outside the CVBasic range
+(2–6) are clamped to the nearest limit.
 
-### 3.2 Velocità (speed track)
+### 3.2 Speed (speed track)
 
-CVBasic ha **un solo `DATA BYTE`** per tutto il brano, quindi non si
-può cambiare il tick a metà. Il convertitore risolve così:
+CVBasic has **a single `DATA BYTE`** for the whole song, so the tick
+cannot change mid-song. The converter resolves this as follows:
 
-1. parte da `initialSpeed`;
-2. scorrendo le righe in ordine di riproduzione, aggiorna la velocità
-   corrente quando il speed track ha un valore diverso da 0; la
-   velocità **si propaga** da un pattern al successivo;
-3. ogni riga genera `passi = max(1, round(velocità / data_byte))`
-   istruzioni `MUSIC`.
+1. starts from `initialSpeed`;
+2. scanning rows in playback order, updates the current speed when the
+   speed track has a non-zero value; speed **propagates** from one
+   pattern to the next;
+3. each row generates `steps = max(1, round(speed / data_byte))`
+   `MUSIC` instructions.
 
-Così un cambio di velocità diventa "più (o meno) passi per riga" e
-resta fedele anche con cambi multipli a metà brano.
+A speed change thus becomes "more (or fewer) steps per row" and remains
+faithful even with multiple mid-song changes.
 
-### 3.3 Durata variabile delle note (articolazione)
+### 3.3 Variable note duration (articulation)
 
-La durata percepita nel tracker non viene dalla posizione delle note
-(in molti passaggi c'è una nota per riga) ma dall'effetto
-`forceInstrumentSpeed` (`sXX`), che regola l'inviluppo dello
-strumento. Mappa applicata:
+The perceived duration in the tracker comes not from note position (many
+passages have one note per row) but from the `forceInstrumentSpeed`
+effect (`sXX`), which controls the instrument envelope. Applied mapping:
 
-- `s00` o effetto assente → **nessuna forzatura**: la nota suona
-  piena fino alla nota successiva (tenuta);
-- `sNN` con N > 0 → la parte in suono dura
-  `round(N × length_scale)` passi, comunque **tagliata** dalla nota
-  successiva (non si sovrappone);
-- una nota senza effetto **eredita** l'ultimo valore `sXX` del canale.
+- `s00` or no effect → **no override**: the note sounds full until
+  the next note (held);
+- `sNN` with N > 0 → the sounding portion lasts
+  `round(N × length_scale)` steps, clipped by the next note
+  (no overlap);
+- a note without an effect **inherits** the last `sXX` value on that
+  channel.
 
-Ogni passo diventa un token: nome nota all'attacco, `S` per il
-prolungamento, `-` per il silenzio.
+Each step becomes a token: note name on attack, `S` for sustain,
+`-` for silence.
 
 ### 3.4 RST (note cut)
 
-Le celle con `instrument = 0` (strumento "Empty") indicano un RST:
-il canale va in silenzio da quella riga. Nel canale melodico la nota
-viene soppressa e i passi corrispondenti restano `-`.
+Cells with `instrument = 0` (the "Empty" instrument) signal an RST:
+the channel goes silent from that row. In the melodic channel the note
+is suppressed and the corresponding steps remain `-`.
 
-### 3.5 Percussioni (quarto canale)
+### 3.5 Percussion (fourth channel)
 
-Gli strumenti con almeno una cella `noise > 0` vengono classificati
-come percussioni. Il tipo CVBasic viene assegnato in base al periodo
-medio di rumore:
+Instruments with at least one cell where `noise > 0` are classified as
+percussion. The CVBasic type is assigned based on the average noise
+period:
 
 - ≤ 5 → `M2` (snare/hi-hat)
-- 6–15 → `M1` (cassa)
-- ≥ 16 → `M3` (rumore basso)
+- 6–15 → `M1` (bass drum)
+- ≥ 16 → `M3` (low noise)
 
-Le note suonate con strumenti percussivi vengono rimosse dai canali
-melodici e collocate nel quarto canale `MUSIC`:
+Notes played with percussion instruments are removed from the melodic
+channels and placed in the fourth `MUSIC` channel:
 
 ```
-MUSIC <voce0>,<voce1>,<voce2>,<drum>
+MUSIC <voice0>,<voice1>,<voice2>,<drum>
 ```
 
-### 3.6 Split intro/loop
+### 3.6 Intro/loop split
 
-Se il file Arkos contiene `loopStartPosition > 0` e non è stato
-richiesto `--stop`, il convertitore genera **due file**:
+If the Arkos file contains `loopStartPosition > 0` and `--stop` was not
+requested, the converter generates **two files**:
 
-- `OUTPUT.bas` — intro (posizioni 0 … loopStart-1), termina con
+- `OUTPUT.bas` — intro (positions 0 … loopStart-1), ends with
   `MUSIC STOP`;
-- `OUTPUT_loop.bas` — sezione in loop (posizioni loopStart …
-  endPosition), termina con `MUSIC REPEAT`.
+- `OUTPUT_loop.bas` — loop section (positions loopStart … endPosition),
+  ends with `MUSIC REPEAT`.
 
 ---
 
-## 4. Parametri da riga di comando
+## 4. Command-line parameters
 
 ```
-arkos2basic INPUT.txt OUTPUT.bas [opzioni]
+arkos2basic INPUT.txt OUTPUT.bas [options]
 ```
 
-| Opzione | Default | Significato |
+| Option | Default | Meaning |
 |---|---|---|
-| `--octaves N` | `0` | delta di ottave rispetto al base +1 (es. `--octaves 1` → offset 2, `--octaves -1` → offset 0) |
-| `--data-byte N` | `2` | frame per passo `MUSIC`; più basso = più fedele ma più righe; `1` = tempo esatto |
-| `--length F` | `0.0` | delta rispetto al base 3.0 per la durata in suono delle note (`--length 1` → 4.0) |
-| `--drum-length N` | `0` | delta rispetto al base 2 step per colpo percussivo |
-| `--invert` | off | inverte la scala: `sXX` alto = nota più corta |
-| `--label NOME` | `musica` | etichetta del blocco musicale |
-| `--stop` | off | termina sempre con `MUSIC STOP` (disabilita lo split intro/loop) |
+| `--octaves N` | `0` | octave delta relative to base +1 (e.g. `--octaves 1` → +2 octaves) |
+| `--transpose N` | `0` | fine semitone shift (+/-); 12 semitones = 1 octave |
+| `--data-byte N` | `2` | frames per `MUSIC` step; lower = more faithful but more rows; `1` = exact timing |
+| `--length F` | `0.0` | delta from base 3.0 for note sounding duration (`--length 1` → 4.0) |
+| `--drum-length N` | `0` | delta from base 2 steps per percussion hit |
+| `--invert` | off | invert the scale: high `sXX` = shorter note |
+| `--label NAME` | `musica` | label for the music block |
+| `--stop` | off | always end with `MUSIC STOP` (disables intro/loop split) |
+| `--exclude-channels "N[,M]"` | `""` | source channels to skip (1–3); remaining channels pack left |
 
-A fine esecuzione lo script stampa le velocità trovate nel tracker,
-gli eventuali strumenti percussivi rilevati e il percorso dei file
-prodotti.
+At the end of execution the script prints the speeds found in the
+tracker, any percussion instruments detected, and the path(s) of the
+generated file(s).
 
-### Esempi
+### Effective transpose
+
+`--octaves N` and `--transpose M` are combined into a single shift:
 
 ```
-arkos2basic musica.txt musica.bas                   # default bilanciato
-arkos2basic musica.txt musica.bas --data-byte 1     # tempo esatto
-arkos2basic musica.txt musica.bas --octaves 1       # tutto +2 ottave
-arkos2basic musica.txt musica.bas --length -1       # note più corte
-arkos2basic musica.txt musica.bas --stop            # un solo file, MUSIC STOP
+effective_transpose = (1 + N) * 12 + M
+```
+
+This means `--octaves 1` = `--transpose 12`, `--octaves -1` = `--transpose -12`.
+
+### Examples
+
+```
+arkos2basic musica.txt musica.bas                       # balanced default
+arkos2basic musica.txt musica.bas --data-byte 1         # exact timing
+arkos2basic musica.txt musica.bas --octaves 1           # everything +2 octaves
+arkos2basic musica.txt musica.bas --transpose 3         # +3 semitones
+arkos2basic musica.txt musica.bas --length -1           # shorter notes
+arkos2basic musica.txt musica.bas --stop                # single file, MUSIC STOP
+arkos2basic musica.txt musica.bas --exclude-channels 2  # skip source channel 2
 ```
 
 ---
 
-## 5. Uso dell'output in CVBasic
+## 5. Using the output in CVBasic
 
-### 5.1 Brano senza split (MUSIC STOP o MUSIC REPEAT semplice)
+### 5.1 Song without split (MUSIC STOP or simple MUSIC REPEAT)
 
 ```basic
     PLAY FULL
@@ -181,15 +193,15 @@ arkos2basic musica.txt musica.bas --stop            # un solo file, MUSIC STOP
     INCLUDE musica.bas
 ```
 
-### 5.2 Brano con intro + loop (caso più comune)
+### 5.2 Song with intro + loop (most common case)
 
-Il convertitore produce `musica.bas` (intro, MUSIC STOP) e
-`musica_loop.bas` (loop, MUSIC REPEAT). Il codice CVBasic deve
-rilevare la fine dell'intro e passare al loop **una sola volta**.
+The converter produces `musica.bas` (intro, MUSIC STOP) and
+`musica_loop.bas` (loop, MUSIC REPEAT). The CVBasic code must detect
+the end of the intro and switch to the loop **exactly once**.
 
-**Attenzione**: in CVBasic l'operatore `NOT` è bitwise, quindi
-`NOT 1 = -2` (non zero = vero). Usare sempre confronti espliciti
-`= 0` invece di `NOT` su variabili flag o su `MUSIC.PLAYING`.
+**Note**: in CVBasic the `NOT` operator is bitwise, so `NOT 1 = -2`
+(non-zero = truthy). Always use explicit `= 0` comparisons instead of
+`NOT` on flags or on `MUSIC.PLAYING`.
 
 ```basic
     DIM loop_on
@@ -208,68 +220,66 @@ rilevare la fine dell'intro e passare al loop **una sola volta**.
     INCLUDE musica_loop.bas
 ```
 
-Il flag `loop_on` è necessario perché `MUSIC.PLAYING` può restare
-`0` per più frame dopo `MUSIC STOP`, e chiamare `PLAY musica_loop`
-più volte resetterebbe il loop al primo step ad ogni frame.
+The `loop_on` flag is necessary because `MUSIC.PLAYING` may remain `0`
+for several frames after `MUSIC STOP`, and calling `PLAY musica_loop`
+multiple times would reset the loop to the first step on every frame.
 
-Usa `PLAY FULL` perché il brano usa più voci. Con `PLAY SIMPLE`
-suonano solo le prime due, liberando un canale per gli effetti sonori.
-I dati stanno in ROM (non intaccano la RAM) ma occupano spazio
-cartuccia: attenzione se sei vicino al limite del banco.
-
----
-
-## 6. Scelte progettuali e assunzioni
-
-- **`s00` = tenuta piena**, non lunghezza zero: era la causa per cui
-  le note risultavano troppo corte e `length_scale` sembrava
-  inefficace.
-- **Velocità che si propaga** tra pattern, con `0 = nessun cambio`,
-  come in Arkos.
-- **Astrazione del chip**: sia Arkos sia CVBasic sono tarati su
-  La = 440 Hz. CVBasic genera i periodi corretti per SN76489 e AY a
-  partire dal nome nota, quindi la conversione a livello di nome è
-  indipendente dal chip e dal clock dell'AY.
-- **Strumenti ignorati** salvo il rilevamento noise: nessun `W/X/Y/Z`,
-  tutte le voci melodiche usano il piano di default.
-- **Direzione di `sXX`** (alto = più lungo) dedotta all'ascolto;
-  invertibile con `--invert`.
+Use `PLAY FULL` because the song uses multiple voices. With `PLAY SIMPLE`
+only the first two voices play, freeing one channel for sound effects.
+Data is stored in ROM (does not use RAM) but occupies cartridge space:
+watch out if you are close to the bank limit.
 
 ---
 
-## 7. Limiti noti
+## 6. Design choices and assumptions
 
-- **Un solo `DATA BYTE` per brano**: con velocità non divisibili per
-  `--data-byte` c'è un piccolo arrotondamento del tempo (es. velocità
-  7 con `--data-byte 2` → 8 frame/riga). Usa `--data-byte 1` per il
-  tempo esatto.
-- **Inviluppo di volume**: non è replicabile; la durata delle note è
-  un'approssimazione, non la curva originale.
-- **Range frequenze SN76489 (ColecoVision)**: il registro di periodo
-  è a 10 bit (max 1023), il che corrisponde a circa 109 Hz (~A2).
-  Le note sotto G#2 sono fuori range e il chip le produce in silenzio.
-  Su MSX (AY-3-8910, prescaler a 12 bit) il problema non si presenta.
-  Se le note basse non si sentono su ColecoVision, aumentare
-  `--octaves` di 1.
-- **Quantizzazione hardware delle frequenze**: nelle ottave gravi i
-  periodi sono meno granulari; la nota può risultare leggermente
-  scordata, in modo diverso tra AY e SN76489. È un limite del chip.
-- **Percussioni — sovrapposizione su stessa riga**: se due canali
-  hanno una nota percussiva sulla stessa riga, l'ultimo canale letto
-  sovrascrive il precedente nel quarto slot `MUSIC`.
+- **`s00` = full hold**, not zero length: this was the cause of notes
+  appearing too short and `length_scale` seeming ineffective.
+- **Speed propagates** between patterns, with `0 = no change`, as in
+  Arkos.
+- **Chip abstraction**: both Arkos and CVBasic are tuned to A = 440 Hz.
+  CVBasic generates the correct periods for SN76489 and AY from the
+  note name, so conversion at the name level is chip- and
+  AY-clock-independent.
+- **Instruments ignored** except for noise detection: no `W/X/Y/Z`,
+  all melodic voices use the default piano.
+- **Direction of `sXX`** (high = longer) inferred by listening;
+  invertible with `--invert`.
 
 ---
 
-## 8. Mappa rapida dei file
+## 7. Known limitations
 
-- `src/arkos2basic/arkos2basic.py` — il convertitore (entry point
-  Poetry: `arkos2basic`).
-- `musica.bas` — output intro con `--data-byte 2` (bilanciato).
-- `musica_loop.bas` — output loop con `--data-byte 2`.
-- `musica_tempo_esatto.bas` — output con `--data-byte 1`.
+- **Single `DATA BYTE` per song**: with speeds not divisible by
+  `--data-byte` there is a small timing rounding error (e.g. speed 7
+  with `--data-byte 2` → 8 frames/row). Use `--data-byte 1` for exact
+  timing.
+- **Volume envelope**: not replicable; note duration is an approximation,
+  not the original curve.
+- **SN76489 frequency range (ColecoVision)**: the period register is
+  10 bits (max 1023), corresponding to about 109 Hz (~A2). Notes below
+  G#2 are out of range and the chip produces silence. On MSX
+  (AY-3-8910, 12-bit prescaler) this problem does not occur. If low
+  notes are silent on ColecoVision, increase `--octaves` by 1.
+- **Hardware frequency quantisation**: in lower octaves periods are less
+  granular; a note may be slightly out of tune, differently between AY
+  and SN76489. This is a chip limitation.
+- **Percussion — same-row overlap**: if two channels have a percussion
+  note on the same row, the last channel read overwrites the previous
+  one in the fourth `MUSIC` slot.
+
+---
+
+## 8. Quick file map
+
+- `src/arkos2basic/cli.py` — the converter (Poetry entry point:
+  `arkos2basic`).
+- `musica.bas` — intro output with `--data-byte 2` (balanced).
+- `musica_loop.bas` — loop output with `--data-byte 2`.
+- `musica_tempo_esatto.bas` — output with `--data-byte 1`.
 
 ---
 
 ## Metadata
-- Ultima modifica: 2026-06-06
+- Ultima modifica: 2026-06-07
 - Modello: claude-sonnet-4-6

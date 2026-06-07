@@ -15,7 +15,7 @@ dependencies = [
 packages = [{include = "arkos2basic", from = "src"}]
 
 [tool.poetry.scripts]
-arkos2basic = "arkos2basic.arkos2basic:app"
+arkos2basic = "arkos2basic.cli:app"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
