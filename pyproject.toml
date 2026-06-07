@@ -1,7 +1,7 @@
 [project]
 name = "arkos2basic"
-version = "0.1.0"
-description = ""
+version = "0.1.0b1"
+description = "Converts Arkos Tracker 3 text exports to CVBasic MUSIC blocks. Handles note transposition, variable note duration, percussion detection and intro/loop splitting. Targets ColecoVision, MSX and Sega SG-1000."
 authors = [
     {name = "Francesco Maida",email = "francesco.maida@gmail.com"}
 ]
