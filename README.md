@@ -7,6 +7,22 @@ Converts Arkos Tracker 3 text exports to CVBasic MUSIC blocks. Handles note tran
 ```
 pipx install arkos2basic
 ```
+
+### What if you don’t have pipx installed?
+
+Depending on your OS, you can install pipx with this command:
+
+#### MacOS
+
+```
+brew install pipx
+```
+
+#### Linux
+
+```
+sudo apt install pipx
+```
   
 ## Usage
 
@@ -56,3 +72,7 @@ LOOP WHILE 1
 INCLUDE mymusic.bas
 INCLUDE mymusic_loop.bas
 ```
+
+## Requirements
+
+Python 3.12 or better.
