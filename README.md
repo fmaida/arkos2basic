@@ -18,8 +18,8 @@ arkos2basic <input-file> <output-file>
 
 If your song has a loop, the app will provide you with two files:
 
-- <output-file-path>/<output-file-stem>.bas
-- <output-file-path>/<output-file-stem>_loop.bas
+- `<output-file-path>/<output-file-stem>.bas`
+- `<output-file-path>/<output-file-stem>_loop.bas`
 
 ## Example
 
