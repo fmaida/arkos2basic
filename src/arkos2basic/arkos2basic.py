@@ -270,18 +270,21 @@ def parse_arkos(text: str) -> Song:
     return song
 
 
-def note_to_cvbasic(note: int, octave_offset: int) -> str:
-    """Converte un numero di nota Arkos nel nome nota CVBasic.
+def note_to_cvbasic(note: int) -> str:
+    """Converte un numero di nota MIDI nel nome nota CVBasic.
+
+    Il numero di nota puo' essere gia' traslato (transpose + offset in
+    semitoni) prima di chiamare questa funzione. L'ottava viene agganciata
+    al range 2-6 se fuori limite.
 
     Args:
-        note: numero di nota in stile MIDI (0 = C-0).
-        octave_offset: ottave da aggiungere per rientrare nel range 2-6.
+        note: numero di nota in stile MIDI (0 = C-0), gia' traslato.
 
     Returns:
         Il nome della nota in formato CVBasic, es. "A4#".
     """
     letter, sharp = NOTE_NAMES[note % 12]
-    octave = note // 12 + octave_offset
+    octave = note // 12
 
     if octave < MIN_OCTAVE:
         octave = MIN_OCTAVE
@@ -297,10 +300,10 @@ def build_channel(
     cells: list[Cell],
     height: int,
     row_start: list[int],
-    octave_offset: int,
     length_scale: float,
     invert_speed: bool,
     drum_instruments: dict[int, str],
+    transpose: int = 0,
 ) -> list[str]:
     """Espande un canale in token CVBasic seguendo il layout dei passi.
 
@@ -312,11 +315,12 @@ def build_channel(
         cells: celle del canale (note ed eventuali soli effetti speed).
         height: numero di righe del pattern.
         row_start: per ogni riga il passo iniziale (lungo height + 1).
-        octave_offset: ottave da aggiungere in conversione.
         length_scale: fattore che allunga la parte in suono delle note.
         invert_speed: se True, forceInstrumentSpeed alto = nota piu' corta.
         drum_instruments: mappa strumento_idx -> tipo CVBasic; le note
             con questi strumenti vengono silenziare nel canale melodico.
+        transpose: semitoni totali da aggiungere al numero MIDI (include
+            la traslazione di ottava e quella fine in semitoni).
 
     Returns:
         Lista di token CVBasic lunga row_start[height].
@@ -352,7 +356,7 @@ def build_channel(
 
         is_silent = current.instrument == 0 or current.instrument in drum_instruments
         if not is_silent:
-            tokens[start] = note_to_cvbasic(current.note, octave_offset)
+            tokens[start] = note_to_cvbasic(current.note + transpose)
             for k in range(1, audible):
                 tokens[start + k] = "S"
 
@@ -404,7 +408,6 @@ def build_drum_channel(
 
 def convert(
     song: Song,
-    octave_offset: int,
     label: str,
     data_byte: int,
     length_scale: float,
@@ -414,12 +417,12 @@ def convert(
     pos_start: int = 0,
     pos_end: int | None = None,
     exclude_channels: set[int] | None = None,
+    transpose: int = 0,
 ) -> tuple[str, set[int]]:
     """Genera il sorgente CVBasic completo della musica.
 
     Args:
         song: struttura della canzone gia' analizzata.
-        octave_offset: ottave da aggiungere per il range CVBasic.
         label: etichetta da assegnare al blocco musicale.
         data_byte: frame per passo MUSIC (il valore DATA BYTE).
         length_scale: fattore che allunga la parte in suono.
@@ -432,6 +435,8 @@ def convert(
         exclude_channels: insieme di indici di canale sorgente da escludere
             (1-based: 1, 2 o 3). I canali rimanenti si compattano a
             sinistra; le posizioni libere a destra restano '-'.
+        transpose: semitoni totali da aggiungere a tutte le note melodiche.
+            Incorpora sia la traslazione di ottava che quella fine.
 
     Returns:
         Una tupla (sorgente BASIC, insieme delle velocita' incontrate).
@@ -481,8 +486,8 @@ def convert(
             channels.append(
                 build_channel(
                     cells, height, row_start,
-                    octave_offset, length_scale, invert_speed,
-                    song.drum_instruments,
+                    length_scale, invert_speed,
+                    song.drum_instruments, transpose,
                 )
             )
         while len(channels) < 3:
@@ -578,6 +583,13 @@ def main(
                  "compattano a sinistra.",
         ),
     ] = "",
+    transpose: Annotated[
+        int,
+        typer.Option(
+            help="Semitoni cromatici da aggiungere a tutte le note "
+                 "(positivo = su, negativo = giu'; 12 = +1 ottava).",
+        ),
+    ] = 0,
 ) -> None:
     """Punto di ingresso da riga di comando."""
     if data_byte < 1:
@@ -604,13 +616,18 @@ def main(
     song = parse_arkos(text)
 
     do_split = song.loop_start_position > 0 and not stop
+
+    # --octaves N contribuisce (1 + N) * 12 semitoni (base 1 ottava + delta).
+    # --transpose M aggiunge M semitoni fini in cima.
+    effective_transpose = (1 + octaves) * 12 + transpose
+
     conv_args = dict(
-        octave_offset=1 + octaves,
         data_byte=data_byte,
         length_scale=3.0 + length_scale,
         invert_speed=invert,
         drum_length=2 + drum_length,
         exclude_channels=excluded if excluded else None,
+        transpose=effective_transpose,
     )
 
     if do_split:
