@@ -75,4 +75,4 @@ INCLUDE mymusic_loop.bas
 
 ## Requirements
 
-Python 3.12 or better.
+Python 3.10 or better.

@@ -1,12 +1,12 @@
 [project]
 name = "arkos2basic"
-version = "0.1.0b4"
+version = "0.1.0b5"
 description = "Converts Arkos Tracker 3 text exports to CVBasic MUSIC blocks. Handles note transposition, variable note duration, percussion detection and intro/loop splitting. Targets ColecoVision, MSX and Sega SG-1000."
 authors = [
     {name = "Francesco Maida",email = "francesco.maida@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12,<4"
+requires-python = ">=3.10,<4"
 dependencies = [
     "typer (>=0.26.7,<0.27.0)"
 ]
