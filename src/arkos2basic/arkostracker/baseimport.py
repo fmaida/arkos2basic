@@ -1,6 +1,7 @@
 """Base class for Arkos Tracker file importers."""
 
 import logging
+from abc import ABC, abstractmethod
 from pathlib import Path
 
 from arkos2basic.arkostracker.song import Song
@@ -10,7 +11,7 @@ from arkos2basic.cvbasic import convert
 logger = logging.getLogger(__name__)
 
 
-class BaseImport:
+class BaseImport(ABC):
     """Base importer for Arkos Tracker source files.
 
     Subclasses implement parse() to read a specific file format and return
@@ -38,6 +39,7 @@ class BaseImport:
         self._transpose: int = 0
 
 
+    @abstractmethod
     def parse(self) -> Song:
         """Read self.input_file and return the parsed Song.
 
@@ -100,10 +102,7 @@ class BaseImport:
         )
 
         if do_split:
-            song_end = (
-                song.end_position + 1 if song.end_position >= 0
-                else len(song.positions)
-            )
+            song_end = song.playback_end
             source_intro, speeds_intro = convert(
                 song, label=label, stop=True,
                 pos_start=0, pos_end=song.loop_start_position,

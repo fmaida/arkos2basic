@@ -236,7 +236,10 @@ watch out if you are close to the bank limit.
 - **`s00` = full hold**, not zero length: this was the cause of notes
   appearing too short and `length_scale` seeming ineffective.
 - **Speed propagates** between patterns, with `0 = no change`, as in
-  Arkos.
+  Arkos. The same holds for the inherited `sXX` value (per channel).
+  When generating the loop section of a split song, both states are
+  first replayed through the intro positions (`state_at_position` in
+  `cvbasic.py`), so the loop starts from the correct speed and `sXX`.
 - **Chip abstraction**: both Arkos and CVBasic are tuned to A = 440 Hz.
   CVBasic generates the correct periods for SN76489 and AY from the
   note name, so conversion at the name level is chip- and
@@ -272,14 +275,21 @@ watch out if you are close to the bank limit.
 
 ## 8. Quick file map
 
-- `src/arkos2basic/cli.py` — the converter (Poetry entry point:
+- `src/arkos2basic/cli.py` — typer CLI (Poetry entry point:
   `arkos2basic`).
-- `musica.bas` — intro output with `--data-byte 2` (balanced).
-- `musica_loop.bas` — loop output with `--data-byte 2`.
-- `musica_tempo_esatto.bas` — output with `--data-byte 1`.
+- `src/arkos2basic/cvbasic.py` — CVBasic source generator
+  (`note_to_cvbasic`, `build_channel`, `build_drum_channel`,
+  `state_at_position`, `convert`).
+- `src/arkos2basic/arkostracker/txtimport.py` — parser for the Arkos
+  Tracker text export (V1.0).
+- `src/arkos2basic/arkostracker/baseimport.py` — abstract base importer
+  (transpose, intro/loop split, output writing).
+- `src/arkos2basic/arkostracker/song.py`, `cell.py` — data models.
+- `tests/` — pytest suite (run with `poetry run pytest`).
+- `examples/music_01.txt` — sample Arkos Tracker export.
 
 ---
 
 ## Metadata
-- Ultima modifica: 2026-06-07
-- Modello: claude-sonnet-4-6
+- Ultima modifica: 2026-06-10
+- Modello: claude-fable-5

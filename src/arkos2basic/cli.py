@@ -6,7 +6,6 @@ exporter, and writes status messages to stdout at the end of execution.
 
 import logging
 import sys
-from io import StringIO
 from pathlib import Path
 from typing import Annotated
 
@@ -22,7 +21,12 @@ app = typer.Typer(help="Convert an Arkos Tracker (.txt) file to CVBasic music.")
 def main(
     input_file: Annotated[
         Path,
-        typer.Argument(help="Input Arkos Tracker file"),
+        typer.Argument(
+            help="Input Arkos Tracker file",
+            exists=True,
+            dir_okay=False,
+            readable=True,
+        ),
     ],
     output_file: Annotated[
         Path,
@@ -95,16 +99,25 @@ def main(
     excluded: set[int] = set()
     for part in exclude_channels.split(","):
         part = part.strip()
-        if part:
+        if not part:
+            continue
+        try:
             val = int(part)
-            if val not in (1, 2, 3):
-                typer.echo(
-                    f"Error: --exclude-channels only accepts values 1, 2, 3 "
-                    f"(got: {val})",
-                    err=True,
-                )
-                raise typer.Exit(1)
-            excluded.add(val)
+        except ValueError:
+            typer.echo(
+                f"Error: --exclude-channels only accepts values 1, 2, 3 "
+                f"(got: '{part}')",
+                err=True,
+            )
+            raise typer.Exit(1)
+        if val not in (1, 2, 3):
+            typer.echo(
+                f"Error: --exclude-channels only accepts values 1, 2, 3 "
+                f"(got: {val})",
+                err=True,
+            )
+            raise typer.Exit(1)
+        excluded.add(val)
 
     importer = TXTImport(input_file=input_file)
 
@@ -113,26 +126,29 @@ def main(
     effective_transpose = (1 + octaves) * 12 + transpose
     importer.transpose(effective_transpose)
 
-    log_buffer = StringIO()
-    log_handler = logging.StreamHandler(log_buffer)
+    log_handler = logging.StreamHandler(sys.stdout)
     log_handler.setFormatter(logging.Formatter("%(message)s"))
     pkg_logger = logging.getLogger("arkos2basic")
     pkg_logger.addHandler(log_handler)
     pkg_logger.setLevel(logging.INFO)
 
-    importer.export(
-        output_file=output_file,
-        label=label,
-        data_byte=data_byte,
-        length_scale=3.0 + length_scale,
-        invert_speed=invert,
-        stop=stop,
-        drum_length=2 + drum_length,
-        exclude_channels=excluded if excluded else None,
-    )
+    exclude_set: set[int] | None = None
+    if excluded:
+        exclude_set = excluded
 
-    pkg_logger.removeHandler(log_handler)
-    sys.stdout.write(log_buffer.getvalue())
+    try:
+        importer.export(
+            output_file=output_file,
+            label=label,
+            data_byte=data_byte,
+            length_scale=3.0 + length_scale,
+            invert_speed=invert,
+            stop=stop,
+            drum_length=2 + drum_length,
+            exclude_channels=exclude_set,
+        )
+    finally:
+        pkg_logger.removeHandler(log_handler)
 
 
 if __name__ == "__main__":

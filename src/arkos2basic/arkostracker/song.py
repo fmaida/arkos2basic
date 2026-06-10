@@ -33,3 +33,16 @@ class Song:
     drum_instruments: dict[int, str] = field(default_factory=dict)
     loop_start_position: int = 0
     end_position: int = -1
+
+
+    @property
+    def playback_end(self) -> int:
+        """Exclusive index of the last position to play.
+
+        Returns:
+            end_position + 1 if set, otherwise the full positions length.
+        """
+        if self.end_position >= 0:
+            return self.end_position + 1
+
+        return len(self.positions)

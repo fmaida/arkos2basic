@@ -4,8 +4,10 @@ Contains all functions needed to emit a CVBasic DATA BYTE / MUSIC block
 from the parsed song structure (Cell, Song).
 """
 
-from arkos2basic.arkostracker.cell import Cell  # noqa: F401
-from arkos2basic.arkostracker.song import Song  # noqa: F401
+from operator import attrgetter
+
+from arkos2basic.arkostracker.cell import Cell
+from arkos2basic.arkostracker.song import Song
 
 
 # CVBasic places the sharp AFTER the octave number (e.g. "A4#"),
@@ -50,9 +52,70 @@ def note_to_cvbasic(note: int) -> str:
     elif octave > MAX_OCTAVE:
         octave = MAX_OCTAVE
 
-    suffix = "#" if sharp else ""
+    suffix = ""
+    if sharp:
+        suffix = "#"
 
     return f"{letter}{octave}{suffix}"
+
+
+def speed_track_for(song: Song, pattern_index: int) -> dict[int, int]:
+    """Return the row -> speed mapping of the pattern's speed track.
+
+    Args:
+        song: the parsed song structure.
+        pattern_index: index of the pattern to look up.
+
+    Returns:
+        The row -> speed dict, or an empty dict if the pattern has no
+        speed track.
+    """
+    track_index = song.pattern_speed.get(pattern_index, -1)
+
+    return song.speed_tracks.get(track_index, {})
+
+
+def state_at_position(
+    song: Song,
+    pos_start: int,
+) -> tuple[int, dict[int, int | None]]:
+    """Replay the song state up to (excluding) the given position.
+
+    Both the tracker speed and the forceInstrumentSpeed (sXX) effects
+    propagate across patterns, so a section converted on its own (e.g.
+    the loop after an intro) must start from the state reached at the
+    end of the previous section, not from the song defaults.
+
+    Args:
+        song: the parsed song structure.
+        pos_start: index of the first position the caller will convert.
+
+    Returns:
+        A tuple (current_speed, last_effects) where last_effects maps
+        each channel slot (0-based) to the last sXX value seen on it,
+        or None if the channel never had one.
+    """
+    current_speed = song.initial_speed
+    last_effects: dict[int, int | None] = {}
+
+    for pattern_index, height in song.positions[:pos_start]:
+        track = speed_track_for(song, pattern_index)
+        for row in range(height):
+            value = track.get(row, 0)
+            if value != 0:
+                current_speed = value
+
+        track_ids = song.patterns.get(pattern_index, [])
+        for slot, track_id in enumerate(track_ids):
+            cells = song.tracks.get(track_id, [])
+            speed_cells = [
+                c for c in cells if c.speed is not None and c.row < height
+            ]
+            if speed_cells:
+                speed_cells.sort(key=attrgetter("row"))
+                last_effects[slot] = speed_cells[-1].speed
+
+    return current_speed, last_effects
 
 
 def build_channel(
@@ -63,12 +126,17 @@ def build_channel(
     invert_speed: bool,
     drum_instruments: dict[int, str],
     transpose: int = 0,
-) -> list[str]:
+    initial_effect: int | None = None,
+) -> tuple[list[str], int | None]:
     """Expand a channel into CVBasic tokens following the step layout.
 
     Notes played with instrument 0 (RST) or with a percussion instrument
     are omitted from the melodic channel (left as silence "-"); percussion
     notes are collected separately by build_drum_channel.
+
+    A note without a forceInstrumentSpeed effect inherits the last sXX
+    value seen on the channel, including values inherited from previous
+    patterns via initial_effect.
 
     Args:
         cells: channel cells (notes and speed-only effects).
@@ -80,27 +148,45 @@ def build_channel(
             these instruments are silenced in the melodic channel.
         transpose: total semitones to add to the MIDI note number
             (includes octave shift and fine semitone adjustment).
+        initial_effect: last sXX value inherited from previous patterns,
+            or None if the channel never had one.
 
     Returns:
-        List of CVBasic tokens of length row_start[height].
+        A tuple (tokens, last_effect): the CVBasic tokens of length
+        row_start[height] and the last sXX value on the channel, to be
+        carried over into the next pattern.
     """
     total = row_start[height]
     tokens: list[str] = ["-"] * total
 
-    note_cells = [c for c in cells if c.note >= 0 and c.row < height]
-    speed_at_row = {
-        c.row: c.speed for c in cells if c.speed is not None and c.row < height
-    }
+    in_range = [c for c in cells if c.row < height]
+    note_cells = sorted(
+        (c for c in in_range if c.note >= 0), key=attrgetter("row")
+    )
+    speed_events = sorted(
+        (c for c in in_range if c.speed is not None), key=attrgetter("row")
+    )
+
+    last_effect = initial_effect
+    event_pos = 0
 
     for i, current in enumerate(note_cells):
-        last_speed: int | None = None
-        for r in range(current.row + 1):
-            if r in speed_at_row:
-                last_speed = speed_at_row[r]
+        while (
+            event_pos < len(speed_events)
+            and speed_events[event_pos].row <= current.row
+        ):
+            last_effect = speed_events[event_pos].speed
+            event_pos += 1
 
-        effective = current.speed if current.speed is not None else last_speed
+        if current.speed is not None:
+            effective = current.speed
+        else:
+            effective = last_effect
 
-        next_row = note_cells[i + 1].row if i + 1 < len(note_cells) else height
+        if i + 1 < len(note_cells):
+            next_row = note_cells[i + 1].row
+        else:
+            next_row = height
         start = row_start[current.row]
         gap = row_start[next_row] - start
 
@@ -113,13 +199,19 @@ def build_channel(
             length = max(1, round(base * length_scale))
             audible = min(length, gap)
 
-        is_silent = current.instrument == 0 or current.instrument in drum_instruments
+        is_silent = (
+            current.instrument == 0 or current.instrument in drum_instruments
+        )
         if not is_silent:
             tokens[start] = note_to_cvbasic(current.note + transpose)
             for k in range(1, audible):
                 tokens[start + k] = "S"
 
-    return tokens
+    while event_pos < len(speed_events):
+        last_effect = speed_events[event_pos].speed
+        event_pos += 1
+
+    return tokens, last_effect
 
 
 def build_drum_channel(
@@ -180,6 +272,11 @@ def convert(
 ) -> tuple[str, set[int]]:
     """Generate the complete CVBasic music source.
 
+    When pos_start > 0 (e.g. converting the loop section of a split
+    song), the speed and the per-channel sXX state are first replayed
+    through the skipped positions, so the section starts from the same
+    state it would have during normal playback.
+
     Args:
         song: the parsed song structure.
         label: label to assign to the music block.
@@ -199,10 +296,13 @@ def convert(
     Returns:
         A tuple (BASIC source string, set of speeds encountered).
     """
-    excluded: set[int] = exclude_channels if exclude_channels is not None else set()
+    excluded: set[int] = set()
+    if exclude_channels is not None:
+        excluded = exclude_channels
 
-    song_end = song.end_position + 1 if song.end_position >= 0 else len(song.positions)
-    end = pos_end if pos_end is not None else song_end
+    end = pos_end
+    if end is None:
+        end = song.playback_end
     positions_to_play = song.positions[pos_start:end]
 
     out: list[str] = []
@@ -212,47 +312,50 @@ def convert(
         f"\t' frames per step (steps/row = tracker speed / {data_byte})"
     )
 
-    current_speed = song.initial_speed
+    current_speed, last_effects = state_at_position(song, pos_start)
     speeds_seen: set[int] = set()
+    has_drums = bool(song.drum_instruments)
 
     for pattern_index, height in positions_to_play:
-        track = song.speed_tracks.get(song.pattern_speed.get(pattern_index, -1), {})
+        track = speed_track_for(song, pattern_index)
 
         steps_per_row: list[int] = []
-        for r in range(height):
-            if r in track and track[r] != 0:
-                current_speed = track[r]
+        for row in range(height):
+            value = track.get(row, 0)
+            if value != 0:
+                current_speed = value
             speeds_seen.add(current_speed)
             steps_per_row.append(max(1, round(current_speed / data_byte)))
 
         row_start = [0] * (height + 1)
-        for r in range(height):
-            row_start[r + 1] = row_start[r] + steps_per_row[r]
+        for row in range(height):
+            row_start[row + 1] = row_start[row] + steps_per_row[row]
         total = row_start[height]
 
         track_ids = song.patterns.get(pattern_index, [])
         all_cells = [song.tracks.get(tid, []) for tid in track_ids]
 
         # Filter excluded channels (1-based); remaining ones pack left,
-        # empty right-hand slots stay '-'.
-        channels_cells = [
-            cells for i, cells in enumerate(all_cells)
-            if (i + 1) not in excluded
+        # empty right-hand slots stay '-'. The original slot index is
+        # kept to carry the per-channel sXX state across patterns.
+        kept = [
+            (slot, cells) for slot, cells in enumerate(all_cells)
+            if (slot + 1) not in excluded
         ]
+        channels_cells = [cells for _, cells in kept]
 
         channels: list[list[str]] = []
-        for cells in channels_cells:
-            channels.append(
-                build_channel(
-                    cells, height, row_start,
-                    length_scale, invert_speed,
-                    song.drum_instruments, transpose,
-                )
+        for slot, cells in kept:
+            tokens, last_effects[slot] = build_channel(
+                cells, height, row_start,
+                length_scale, invert_speed,
+                song.drum_instruments, transpose,
+                initial_effect=last_effects.get(slot),
             )
+            channels.append(tokens)
         while len(channels) < 3:
             channels.append(["-"] * total)
 
-        has_drums = bool(song.drum_instruments)
         if has_drums:
             drums = build_drum_channel(
                 channels_cells, row_start, height,
@@ -261,7 +364,7 @@ def convert(
 
         out.append(
             f"\t' --- pattern {pattern_index} ({height} rows, "
-            f"speed {steps_per_row and current_speed}) ---"
+            f"speed {current_speed}) ---"
         )
         for s in range(total):
             if has_drums:
@@ -274,7 +377,9 @@ def convert(
                     f"\tMUSIC {channels[0][s]},{channels[1][s]},{channels[2][s]}"
                 )
 
-    ending = "STOP" if stop else "REPEAT"
+    ending = "REPEAT"
+    if stop:
+        ending = "STOP"
     out.append(f"\tMUSIC {ending}")
 
     return "\n".join(out) + "\n", speeds_seen

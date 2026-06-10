@@ -170,16 +170,6 @@ class TXTImport(BaseImport):
         return song
 
 
-    def transpose(self, notes: int) -> None:
-        """Set the semitone shift for all melodic notes on export.
-
-        Args:
-            notes: total semitones to add (positive = up, negative = down;
-                12 = one octave up).
-        """
-        super().transpose(notes)
-
-
     def _noise_to_drum_type(self, avg_noise: float) -> str:
         """Map the average noise period of an instrument to a CVBasic drum type.
 
