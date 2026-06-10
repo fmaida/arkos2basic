@@ -51,6 +51,30 @@ class TestCli:
         assert content.rstrip().endswith("MUSIC STOP")
 
 
+    def test_no_instruments_option(self, tmp_path: Path) -> None:
+        """--no-instruments removes every W/X/Y suffix from the output."""
+        output = tmp_path / "musica.bas"
+
+        result = runner.invoke(
+            app, [str(EXAMPLE_FILE), str(output), "--no-instruments"],
+        )
+
+        assert result.exit_code == 0
+        content = output.read_text(encoding="utf-8")
+        assert "W" not in content
+
+
+    def test_default_run_emits_instrument_suffix(self, tmp_path: Path) -> None:
+        """By default the first note of a channel carries its suffix."""
+        output = tmp_path / "musica.bas"
+
+        result = runner.invoke(app, [str(EXAMPLE_FILE), str(output)])
+
+        assert result.exit_code == 0
+        content = output.read_text(encoding="utf-8")
+        assert "W" in content
+
+
     def test_missing_input_file(self, tmp_path: Path) -> None:
         """A non-existing input file is rejected by typer."""
         result = runner.invoke(

@@ -126,7 +126,7 @@ class TestConvert:
 
         lines = music_lines(source)
         # s02 with scale 3.0 -> 6 audible steps out of 8.
-        assert lines[0] == "MUSIC D4,-,-"
+        assert lines[0] == "MUSIC D4W,-,-"
         assert lines[1:6] == ["MUSIC S,-,-"] * 5
         assert lines[6:] == ["MUSIC -,-,-"] * 2
 
@@ -173,7 +173,36 @@ class TestConvert:
         )
 
         lines = music_lines(source)
-        assert lines[0] == "MUSIC E4,-,-"
+        assert lines[0] == "MUSIC E4W,-,-"
+
+
+    def test_instrument_suffix_carries_across_patterns(self) -> None:
+        """The suffix is emitted once and inherited by later patterns."""
+        song = make_split_song()
+
+        source, _ = convert(
+            song, label="m", data_byte=2, length_scale=3.0,
+            invert_speed=False,
+        )
+
+        lines = music_lines(source)
+        # Pattern 0 is 9 steps long (3 at speed 6 + 3x2 at speed 4):
+        # its first note carries W, the note in pattern 1 does not.
+        assert lines[0] == "MUSIC C4W,-,-"
+        assert lines[9] == "MUSIC D4,-,-"
+
+
+    def test_instrument_mapping_disabled(self) -> None:
+        """map_instruments=False produces plain note names."""
+        song = make_split_song()
+
+        source, _ = convert(
+            song, label="m", data_byte=2, length_scale=3.0,
+            invert_speed=False, map_instruments=False,
+        )
+
+        lines = music_lines(source)
+        assert lines[0] == "MUSIC C4,-,-"
 
 
     def test_articulation_diagnostic_logged(

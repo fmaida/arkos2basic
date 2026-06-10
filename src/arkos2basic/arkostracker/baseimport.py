@@ -71,6 +71,7 @@ class BaseImport(ABC):
         stop: bool,
         drum_length: int,
         exclude_channels: set[int] | None = None,
+        map_instruments: bool = True,
     ) -> None:
         """Convert the song to CVBasic and write the output file(s).
 
@@ -88,6 +89,8 @@ class BaseImport(ABC):
             stop: if True, always end with MUSIC STOP (no split).
             drum_length: consecutive steps per percussion hit.
             exclude_channels: 1-based source channel indices to skip.
+            map_instruments: if True, Arkos instruments 1-3 are mapped
+                to the CVBasic suffixes W/X/Y.
         """
         song = self._song
         do_split = song.loop_start_position > 0 and not stop
@@ -99,6 +102,7 @@ class BaseImport(ABC):
             drum_length=drum_length,
             exclude_channels=exclude_channels,
             transpose=self._transpose,
+            map_instruments=map_instruments,
         )
 
         if do_split:

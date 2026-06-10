@@ -54,9 +54,9 @@ class TestBuildChannel:
         cells = [Cell(row=0, note=48, instrument=1)]
         row_start = uniform_row_start(4, 2)
 
-        tokens, last = build_channel(cells, 4, row_start, 3.0, False, {})
+        tokens, last, _ = build_channel(cells, 4, row_start, 3.0, False, {})
 
-        assert tokens == ["C4", "S", "S", "S", "S", "S", "S", "S"]
+        assert tokens == ["C4W", "S", "S", "S", "S", "S", "S", "S"]
         assert last is None
 
 
@@ -65,9 +65,9 @@ class TestBuildChannel:
         cells = [Cell(row=0, note=48, speed=1, instrument=1)]
         row_start = uniform_row_start(4, 2)
 
-        tokens, last = build_channel(cells, 4, row_start, 3.0, False, {})
+        tokens, last, _ = build_channel(cells, 4, row_start, 3.0, False, {})
 
-        assert tokens == ["C4", "S", "S", "-", "-", "-", "-", "-"]
+        assert tokens == ["C4W", "S", "S", "-", "-", "-", "-", "-"]
         assert last == 1
 
 
@@ -76,9 +76,9 @@ class TestBuildChannel:
         cells = [Cell(row=0, note=48, speed=0, instrument=1)]
         row_start = uniform_row_start(4, 2)
 
-        tokens, _ = build_channel(cells, 4, row_start, 3.0, False, {})
+        tokens, _, _ = build_channel(cells, 4, row_start, 3.0, False, {})
 
-        assert tokens == ["C4", "S", "S", "S", "S", "S", "S", "S"]
+        assert tokens == ["C4W", "S", "S", "S", "S", "S", "S", "S"]
 
 
     def test_note_inherits_previous_effect(self) -> None:
@@ -89,7 +89,7 @@ class TestBuildChannel:
         ]
         row_start = uniform_row_start(4, 2)
 
-        tokens, _ = build_channel(cells, 4, row_start, 3.0, False, {})
+        tokens, _, _ = build_channel(cells, 4, row_start, 3.0, False, {})
 
         assert tokens[4:] == ["D4", "S", "S", "-"]
 
@@ -99,11 +99,11 @@ class TestBuildChannel:
         cells = [Cell(row=0, note=48, instrument=1)]
         row_start = uniform_row_start(4, 2)
 
-        tokens, last = build_channel(
+        tokens, last, _ = build_channel(
             cells, 4, row_start, 3.0, False, {}, initial_effect=1,
         )
 
-        assert tokens == ["C4", "S", "S", "-", "-", "-", "-", "-"]
+        assert tokens == ["C4W", "S", "S", "-", "-", "-", "-", "-"]
         assert last == 1
 
 
@@ -115,9 +115,9 @@ class TestBuildChannel:
         ]
         row_start = uniform_row_start(2, 2)
 
-        tokens, _ = build_channel(cells, 2, row_start, 3.0, False, {})
+        tokens, _, _ = build_channel(cells, 2, row_start, 3.0, False, {})
 
-        assert tokens == ["C4", "S", "D4", "S"]
+        assert tokens == ["C4W", "S", "D4", "S"]
 
 
     def test_invert_speed(self) -> None:
@@ -125,10 +125,10 @@ class TestBuildChannel:
         cells = [Cell(row=0, note=48, speed=10, instrument=1)]
         row_start = uniform_row_start(8, 2)
 
-        tokens, _ = build_channel(cells, 8, row_start, 3.0, True, {})
+        tokens, _, _ = build_channel(cells, 8, row_start, 3.0, True, {})
 
         # base = max(1, 12 - 10) = 2 -> length = 6
-        assert tokens[:7] == ["C4", "S", "S", "S", "S", "S", "-"]
+        assert tokens[:7] == ["C4W", "S", "S", "S", "S", "S", "-"]
 
 
     def test_rst_silences_channel(self) -> None:
@@ -136,7 +136,7 @@ class TestBuildChannel:
         cells = [Cell(row=0, note=48, instrument=0)]
         row_start = uniform_row_start(2, 2)
 
-        tokens, _ = build_channel(cells, 2, row_start, 3.0, False, {})
+        tokens, _, _ = build_channel(cells, 2, row_start, 3.0, False, {})
 
         assert tokens == ["-", "-", "-", "-"]
 
@@ -146,7 +146,7 @@ class TestBuildChannel:
         cells = [Cell(row=0, note=48, instrument=5)]
         row_start = uniform_row_start(2, 2)
 
-        tokens, _ = build_channel(cells, 2, row_start, 3.0, False, {5: "M1"})
+        tokens, _, _ = build_channel(cells, 2, row_start, 3.0, False, {5: "M1"})
 
         assert tokens == ["-", "-", "-", "-"]
 
@@ -165,7 +165,8 @@ class TestBuildChannel:
 
         # s01 (3 steps) fits in its 8-step gap; both s06 notes want 18
         # steps but only have 4-step gaps: clipped.
-        assert stats == {"notes": 3, "clipped": 2}
+        assert stats["notes"] == 3
+        assert stats["clipped"] == 2
 
 
     def test_stats_ignore_held_and_silent_notes(self) -> None:
@@ -179,7 +180,8 @@ class TestBuildChannel:
 
         build_channel(cells, 4, row_start, 3.0, False, {}, stats=stats)
 
-        assert stats == {"notes": 0, "clipped": 0}
+        assert stats["notes"] == 0
+        assert stats["clipped"] == 0
 
 
     def test_speed_only_cell_updates_last_effect(self) -> None:
@@ -187,10 +189,94 @@ class TestBuildChannel:
         cells = [Cell(row=3, note=-1, speed=4)]
         row_start = uniform_row_start(4, 2)
 
-        tokens, last = build_channel(cells, 4, row_start, 3.0, False, {})
+        tokens, last, _ = build_channel(cells, 4, row_start, 3.0, False, {})
 
         assert tokens == ["-"] * 8
         assert last == 4
+
+
+class TestInstrumentMapping:
+    """Tests for the Arkos instrument -> CVBasic W/X/Y suffix mapping."""
+
+    def test_suffix_emitted_on_first_note_and_on_change(self) -> None:
+        """The suffix appears on the first note and on every change."""
+        cells = [
+            Cell(row=0, note=48, instrument=1),
+            Cell(row=2, note=50, instrument=2),
+            Cell(row=4, note=52, instrument=2),
+            Cell(row=6, note=53, instrument=3),
+        ]
+        row_start = uniform_row_start(8, 1)
+
+        tokens, _, suffix = build_channel(cells, 8, row_start, 3.0, False, {})
+
+        assert tokens[0] == "C4W"
+        assert tokens[2] == "D4X"
+        assert tokens[4] == "E4"
+        assert tokens[6] == "F4Y"
+        assert suffix == "Y"
+
+
+    def test_initial_suffix_suppresses_repetition(self) -> None:
+        """No suffix is emitted if the channel is already on it."""
+        cells = [Cell(row=0, note=50, instrument=2)]
+        row_start = uniform_row_start(2, 1)
+
+        tokens, _, suffix = build_channel(
+            cells, 2, row_start, 3.0, False, {}, initial_suffix="X",
+        )
+
+        assert tokens[0] == "D4"
+        assert suffix == "X"
+
+
+    def test_unknown_instrument_maps_to_piano(self) -> None:
+        """Melodic instruments beyond 3 fall back to W."""
+        cells = [Cell(row=0, note=48, instrument=7)]
+        row_start = uniform_row_start(2, 1)
+
+        tokens, _, suffix = build_channel(cells, 2, row_start, 3.0, False, {})
+
+        assert tokens[0] == "C4W"
+        assert suffix == "W"
+
+
+    def test_note_without_instrument_inherits(self) -> None:
+        """A cell with instrument -1 keeps the channel's instrument."""
+        cells = [
+            Cell(row=0, note=48, instrument=2),
+            Cell(row=2, note=50, instrument=-1),
+        ]
+        row_start = uniform_row_start(4, 1)
+
+        tokens, _, suffix = build_channel(cells, 4, row_start, 3.0, False, {})
+
+        assert tokens[0] == "C4X"
+        assert tokens[2] == "D4"
+        assert suffix == "X"
+
+
+    def test_suffix_goes_after_the_sharp(self) -> None:
+        """Token order is note, octave, sharp, instrument: A4#Y."""
+        cells = [Cell(row=0, note=58, instrument=3)]
+        row_start = uniform_row_start(2, 1)
+
+        tokens, _, _ = build_channel(cells, 2, row_start, 3.0, False, {})
+
+        assert tokens[0] == "A4#Y"
+
+
+    def test_mapping_disabled(self) -> None:
+        """With map_instruments=False no suffix is ever emitted."""
+        cells = [Cell(row=0, note=48, instrument=2)]
+        row_start = uniform_row_start(2, 1)
+
+        tokens, _, suffix = build_channel(
+            cells, 2, row_start, 3.0, False, {}, map_instruments=False,
+        )
+
+        assert tokens[0] == "C4"
+        assert suffix is None
 
 
 class TestBuildDrumChannel:

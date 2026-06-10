@@ -34,6 +34,14 @@ NOTE_NAMES: list[tuple[str, bool]] = [
 MIN_OCTAVE: int = 2
 MAX_OCTAVE: int = 6
 
+# Positional mapping of the Arkos instrument index to the CVBasic
+# instrument suffix, regardless of what the instrument actually is in
+# the tracker. Z (bass) is excluded because the CVBasic player also
+# transposes it two octaves down. Melodic instruments beyond 3 fall
+# back to W (piano, the player default).
+INSTRUMENT_SUFFIXES: dict[int, str] = {1: "W", 2: "X", 3: "Y"}
+DEFAULT_SUFFIX: str = "W"
+
 
 def note_to_cvbasic(note: int) -> str:
     """Convert a MIDI note number to a CVBasic note name.
@@ -131,8 +139,10 @@ def build_channel(
     drum_instruments: dict[int, str],
     transpose: int = 0,
     initial_effect: int | None = None,
+    initial_suffix: str | None = None,
+    map_instruments: bool = True,
     stats: dict[str, int] | None = None,
-) -> tuple[list[str], int | None]:
+) -> tuple[list[str], int | None, str | None]:
     """Expand a channel into CVBasic tokens following the step layout.
 
     Notes played with instrument 0 (RST) or with a percussion instrument
@@ -142,6 +152,12 @@ def build_channel(
     A note without a forceInstrumentSpeed effect inherits the last sXX
     value seen on the channel, including values inherited from previous
     patterns via initial_effect.
+
+    When map_instruments is True, the Arkos instrument index is mapped
+    positionally to the CVBasic instrument suffix (1 -> W, 2 -> X,
+    3 -> Y, others -> W). Since CVBasic carries the instrument over per
+    channel, the suffix is emitted only when it differs from the last
+    one emitted (tracked via initial_suffix across patterns).
 
     Args:
         cells: channel cells (notes and speed-only effects).
@@ -155,14 +171,19 @@ def build_channel(
             (includes octave shift and fine semitone adjustment).
         initial_effect: last sXX value inherited from previous patterns,
             or None if the channel never had one.
+        initial_suffix: instrument suffix already emitted on the channel
+            in previous patterns, or None if none was emitted yet.
+        map_instruments: if False, never emit instrument suffixes
+            (all notes use the player default piano).
         stats: optional accumulator with "notes" and "clipped" keys;
             counts the melodic notes driven by an sXX > 0 and how many
             of them had their duration clipped by the next note.
 
     Returns:
-        A tuple (tokens, last_effect): the CVBasic tokens of length
-        row_start[height] and the last sXX value on the channel, to be
-        carried over into the next pattern.
+        A tuple (tokens, last_effect, last_suffix): the CVBasic tokens
+        of length row_start[height], the last sXX value on the channel
+        and the last emitted instrument suffix, both to be carried over
+        into the next pattern.
     """
     total = row_start[height]
     tokens: list[str] = ["-"] * total
@@ -176,6 +197,7 @@ def build_channel(
     )
 
     last_effect = initial_effect
+    last_suffix = initial_suffix
     event_pos = 0
 
     for i, current in enumerate(note_cells):
@@ -216,7 +238,23 @@ def build_channel(
                     stats["clipped"] += 1
 
         if not is_silent:
-            tokens[start] = note_to_cvbasic(current.note + transpose)
+            name = note_to_cvbasic(current.note + transpose)
+            if map_instruments:
+                suffix = INSTRUMENT_SUFFIXES.get(current.instrument)
+                if suffix is None:
+                    if current.instrument >= 0:
+                        suffix = DEFAULT_SUFFIX
+                    elif last_suffix is not None:
+                        suffix = last_suffix
+                    else:
+                        suffix = DEFAULT_SUFFIX
+                if suffix != last_suffix:
+                    name = f"{name}{suffix}"
+                    last_suffix = suffix
+                if stats is not None:
+                    key = f"notes_{suffix}"
+                    stats[key] = stats.get(key, 0) + 1
+            tokens[start] = name
             for k in range(1, audible):
                 tokens[start + k] = "S"
 
@@ -224,7 +262,7 @@ def build_channel(
         last_effect = speed_events[event_pos].speed
         event_pos += 1
 
-    return tokens, last_effect
+    return tokens, last_effect, last_suffix
 
 
 def build_drum_channel(
@@ -282,6 +320,7 @@ def convert(
     pos_end: int | None = None,
     exclude_channels: set[int] | None = None,
     transpose: int = 0,
+    map_instruments: bool = True,
 ) -> tuple[str, set[int]]:
     """Generate the complete CVBasic music source.
 
@@ -305,6 +344,10 @@ def convert(
             (1, 2, or 3). Remaining channels are packed left; empty
             right-hand slots become '-'.
         transpose: total semitones to add to all melodic notes.
+        map_instruments: if True, Arkos instruments 1-3 are mapped to
+            the CVBasic suffixes W/X/Y (see build_channel). The suffix
+            emission state starts fresh in every generated file, so the
+            first note of each channel always carries its suffix.
 
     Returns:
         A tuple (BASIC source string, set of speeds encountered).
@@ -326,6 +369,7 @@ def convert(
     )
 
     current_speed, last_effects = state_at_position(song, pos_start)
+    last_suffixes: dict[int, str | None] = {}
     speeds_seen: set[int] = set()
     has_drums = bool(song.drum_instruments)
     stats: dict[str, int] = {"notes": 0, "clipped": 0}
@@ -360,11 +404,13 @@ def convert(
 
         channels: list[list[str]] = []
         for slot, cells in kept:
-            tokens, last_effects[slot] = build_channel(
+            tokens, last_effects[slot], last_suffixes[slot] = build_channel(
                 cells, height, row_start,
                 length_scale, invert_speed,
                 song.drum_instruments, transpose,
                 initial_effect=last_effects.get(slot),
+                initial_suffix=last_suffixes.get(slot),
+                map_instruments=map_instruments,
                 stats=stats,
             )
             channels.append(tokens)
@@ -391,6 +437,15 @@ def convert(
                 out.append(
                     f"\tMUSIC {channels[0][s]},{channels[1][s]},{channels[2][s]}"
                 )
+
+    if map_instruments:
+        counts: dict[str, int] = {}
+        for letter in ("W", "X", "Y"):
+            value = stats.get(f"notes_{letter}", 0)
+            if value > 0:
+                counts[letter] = value
+        if set(counts) - {"W"}:
+            logger.info("Instruments (%s): %s", label, counts)
 
     if stats["notes"] > 0:
         logger.info(

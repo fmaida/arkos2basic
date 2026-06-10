@@ -90,6 +90,14 @@ def main(
                  "(positive = up, negative = down; 12 = +1 octave).",
         ),
     ] = 0,
+    no_instruments: Annotated[
+        bool,
+        typer.Option(
+            "--no-instruments",
+            help="Do not map Arkos instruments 1-3 to CVBasic W/X/Y; "
+                 "all melodic notes use the default piano.",
+        ),
+    ] = False,
 ) -> None:
     """Command-line entry point."""
     if data_byte < 1:
@@ -146,6 +154,7 @@ def main(
             stop=stop,
             drum_length=2 + drum_length,
             exclude_channels=exclude_set,
+            map_instruments=not no_instruments,
         )
     finally:
         pkg_logger.removeHandler(log_handler)

@@ -144,7 +144,29 @@ channels and placed in the fourth `MUSIC` channel:
 MUSIC <voice0>,<voice1>,<voice2>,<drum>
 ```
 
-### 3.6 Intro/loop split
+### 3.6 Instrument mapping (W/X/Y)
+
+Arkos instruments are mapped **positionally** to the CVBasic instrument
+suffixes, regardless of what the instrument actually is in the tracker:
+
+| Arkos instrument | CVBasic suffix |
+|---|---|
+| 1 | `W` (piano) |
+| 2 | `X` (clarinet — the player also raises it one octave) |
+| 3 | `Y` (flute) |
+| ≥ 4 (melodic) | `W` |
+
+`Z` (bass) is not used because the CVBasic player transposes it two
+octaves down. Percussion detection has priority: a noise-based
+instrument goes to the fourth MUSIC channel even if its index is 1-3.
+
+Since CVBasic carries the instrument over per channel, the suffix is
+emitted only when it changes (e.g. `E3X`), with an explicit suffix on
+the first note of each channel of each generated file so the loop file
+always starts from a known state. The suffix lives in the same byte as
+the note, so it costs no ROM. Disable with `--no-instruments`.
+
+### 3.7 Intro/loop split
 
 If the Arkos file contains `loopStartPosition > 0` and `--stop` was not
 requested, the converter generates **two files**:
@@ -172,6 +194,7 @@ arkos2basic INPUT.txt OUTPUT.bas [options]
 | `--invert` | off | invert the scale: high `sXX` = shorter note |
 | `--label NAME` | `musica` | label for the music block |
 | `--stop` | off | always end with `MUSIC STOP` (disables intro/loop split) |
+| `--no-instruments` | off | do not map Arkos instruments 1-3 to W/X/Y (all piano) |
 | `--exclude-channels "N[,M]"` | `""` | source channels to skip (1–3); remaining channels pack left |
 
 At the end of execution the script prints the speeds found in the
@@ -266,8 +289,10 @@ watch out if you are close to the bank limit.
   CVBasic generates the correct periods for SN76489 and AY from the
   note name, so conversion at the name level is chip- and
   AY-clock-independent.
-- **Instruments ignored** except for noise detection: no `W/X/Y/Z`,
-  all melodic voices use the default piano.
+- **Instrument mapping is positional** (§3.6): Arkos 1/2/3 → `W/X/Y`
+  by index, ignoring the actual instrument definition (except for the
+  noise field, used for percussion detection). `--no-instruments`
+  restores the old all-piano behaviour.
 - **Direction of `sXX`** (high = longer) inferred by listening;
   invertible with `--invert`.
 
