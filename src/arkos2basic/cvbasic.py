@@ -4,10 +4,14 @@ Contains all functions needed to emit a CVBasic DATA BYTE / MUSIC block
 from the parsed song structure (Cell, Song).
 """
 
+import logging
 from operator import attrgetter
 
 from arkos2basic.arkostracker.cell import Cell
 from arkos2basic.arkostracker.song import Song
+
+
+logger = logging.getLogger(__name__)
 
 
 # CVBasic places the sharp AFTER the octave number (e.g. "A4#"),
@@ -127,6 +131,7 @@ def build_channel(
     drum_instruments: dict[int, str],
     transpose: int = 0,
     initial_effect: int | None = None,
+    stats: dict[str, int] | None = None,
 ) -> tuple[list[str], int | None]:
     """Expand a channel into CVBasic tokens following the step layout.
 
@@ -150,6 +155,9 @@ def build_channel(
             (includes octave shift and fine semitone adjustment).
         initial_effect: last sXX value inherited from previous patterns,
             or None if the channel never had one.
+        stats: optional accumulator with "notes" and "clipped" keys;
+            counts the melodic notes driven by an sXX > 0 and how many
+            of them had their duration clipped by the next note.
 
     Returns:
         A tuple (tokens, last_effect): the CVBasic tokens of length
@@ -190,6 +198,10 @@ def build_channel(
         start = row_start[current.row]
         gap = row_start[next_row] - start
 
+        is_silent = (
+            current.instrument == 0 or current.instrument in drum_instruments
+        )
+
         if effective is None or effective == 0:
             audible = gap
         else:
@@ -198,10 +210,11 @@ def build_channel(
                 base = max(1, 12 - effective)
             length = max(1, round(base * length_scale))
             audible = min(length, gap)
+            if stats is not None and not is_silent:
+                stats["notes"] += 1
+                if length > gap:
+                    stats["clipped"] += 1
 
-        is_silent = (
-            current.instrument == 0 or current.instrument in drum_instruments
-        )
         if not is_silent:
             tokens[start] = note_to_cvbasic(current.note + transpose)
             for k in range(1, audible):
@@ -315,6 +328,7 @@ def convert(
     current_speed, last_effects = state_at_position(song, pos_start)
     speeds_seen: set[int] = set()
     has_drums = bool(song.drum_instruments)
+    stats: dict[str, int] = {"notes": 0, "clipped": 0}
 
     for pattern_index, height in positions_to_play:
         track = speed_track_for(song, pattern_index)
@@ -351,6 +365,7 @@ def convert(
                 length_scale, invert_speed,
                 song.drum_instruments, transpose,
                 initial_effect=last_effects.get(slot),
+                stats=stats,
             )
             channels.append(tokens)
         while len(channels) < 3:
@@ -376,6 +391,14 @@ def convert(
                 out.append(
                     f"\tMUSIC {channels[0][s]},{channels[1][s]},{channels[2][s]}"
                 )
+
+    if stats["notes"] > 0:
+        logger.info(
+            "Articulation (%s): %d of %d sXX notes clipped by the next "
+            "note. If many are clipped, sXX values sound the same: "
+            "lower --data-byte (1 = max resolution) and tune --length.",
+            label, stats["clipped"], stats["notes"],
+        )
 
     ending = "REPEAT"
     if stop:

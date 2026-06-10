@@ -151,6 +151,37 @@ class TestBuildChannel:
         assert tokens == ["-", "-", "-", "-"]
 
 
+    def test_stats_count_clipped_notes(self) -> None:
+        """stats counts sXX notes and how many are clipped by the gap."""
+        cells = [
+            Cell(row=0, note=48, speed=1, instrument=1),
+            Cell(row=4, note=50, speed=6, instrument=1),
+            Cell(row=6, note=52, speed=6, instrument=1),
+        ]
+        row_start = uniform_row_start(8, 2)
+        stats = {"notes": 0, "clipped": 0}
+
+        build_channel(cells, 8, row_start, 3.0, False, {}, stats=stats)
+
+        # s01 (3 steps) fits in its 8-step gap; both s06 notes want 18
+        # steps but only have 4-step gaps: clipped.
+        assert stats == {"notes": 3, "clipped": 2}
+
+
+    def test_stats_ignore_held_and_silent_notes(self) -> None:
+        """Held notes (no sXX) and RST notes do not enter the stats."""
+        cells = [
+            Cell(row=0, note=48, instrument=1),
+            Cell(row=2, note=50, speed=6, instrument=0),
+        ]
+        row_start = uniform_row_start(4, 2)
+        stats = {"notes": 0, "clipped": 0}
+
+        build_channel(cells, 4, row_start, 3.0, False, {}, stats=stats)
+
+        assert stats == {"notes": 0, "clipped": 0}
+
+
     def test_speed_only_cell_updates_last_effect(self) -> None:
         """A cell with only an sXX effect updates the returned state."""
         cells = [Cell(row=3, note=-1, speed=4)]

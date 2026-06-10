@@ -100,6 +100,27 @@ effect (`sXX`), which controls the instrument envelope. Applied mapping:
 Each step becomes a token: note name on attack, `S` for sustain,
 `-` for silence.
 
+**Articulation resolution and clipping.** The sounding portion is
+always clipped by the next note on the channel, so the differentiation
+between `sXX` values is limited by the gap *measured in steps*. With
+`--data-byte 2` and speed 6 a row is only 3 steps: any `sXX ≥ 1` fills
+it and s01…s06 all sound identical (and `--length` appears to do
+nothing, because the clip happens first). Two remedies:
+
+- **`--length` negative (free)**: compresses the durations inside the
+  existing gaps without adding any rows. On a typical song at speed 7
+  `--length -2` maps s01…s04 to 1…4 distinct steps even on adjacent
+  rows. Notes get shorter overall, quantised to `data_byte`-frame
+  steps. Prefer this when ROM space matters (16/32K games).
+- **`--data-byte 1`**: doubles the steps per row (double output size,
+  DATA BYTE 1 = one step per frame, same musical tempo) for finer
+  quantisation. Not possible to go below 1 (the CVBasic player
+  advances at most once per frame).
+
+The converter prints how many `sXX` notes were clipped (e.g.
+`Articulation: 239 of 382 sXX notes clipped`): tune `--length` (and
+`--data-byte` if affordable) until the ratio is low.
+
 ### 3.4 RST (note cut)
 
 Cells with `instrument = 0` (the "Empty" instrument) signal an RST:
@@ -154,7 +175,8 @@ arkos2basic INPUT.txt OUTPUT.bas [options]
 | `--exclude-channels "N[,M]"` | `""` | source channels to skip (1–3); remaining channels pack left |
 
 At the end of execution the script prints the speeds found in the
-tracker, any percussion instruments detected, and the path(s) of the
+tracker, any percussion instruments detected, the number of `sXX`
+notes clipped by the next note (see §3.3), and the path(s) of the
 generated file(s).
 
 ### Effective transpose
@@ -259,6 +281,10 @@ watch out if you are close to the bank limit.
   timing.
 - **Volume envelope**: not replicable; note duration is an approximation,
   not the original curve.
+- **Articulation resolution**: `sXX` durations are quantised to steps
+  and clipped by the next note; with `--data-byte 2` and notes 1-2 rows
+  apart most `sXX` values collapse to the same duration. Use a negative
+  `--length` (free) or `--data-byte 1` (~double size) — see §3.3.
 - **SN76489 frequency range (ColecoVision)**: the period register is
   10 bits (max 1023), corresponding to about 109 Hz (~A2). Notes below
   G#2 are out of range and the chip produces silence. On MSX

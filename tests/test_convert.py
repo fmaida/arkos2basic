@@ -1,5 +1,9 @@
 """Tests for the full song conversion (convert and state_at_position)."""
 
+import logging
+
+import pytest
+
 from arkos2basic.arkostracker.cell import Cell
 from arkos2basic.arkostracker.song import Song
 from arkos2basic.cvbasic import convert, state_at_position
@@ -170,6 +174,22 @@ class TestConvert:
 
         lines = music_lines(source)
         assert lines[0] == "MUSIC E4,-,-"
+
+
+    def test_articulation_diagnostic_logged(
+        self, caplog: pytest.LogCaptureFixture
+    ) -> None:
+        """convert logs how many sXX notes were clipped by the next note."""
+        song = make_split_song()
+
+        with caplog.at_level(logging.INFO, logger="arkos2basic.cvbasic"):
+            convert(
+                song, label="m", data_byte=2, length_scale=3.0,
+                invert_speed=False,
+            )
+
+        messages = [r.getMessage() for r in caplog.records]
+        assert any("sXX notes clipped" in m for m in messages)
 
 
     def test_drums_add_fourth_music_column(self) -> None:
